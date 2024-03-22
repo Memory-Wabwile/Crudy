@@ -1,0 +1,272 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h1>Node.js Project</h1>
+  <h2>Introduction</h2>
+  <p>
+    So far so good. Am assuming you had a great journey to this point. I surely
+    have enjoyed the Node.js journey. Before bringing a real-life project to
+    life with what we have learned in Node.js, let us take a step back and
+    review what we have grasped.
+  </p>
+  <p>
+    Take a pause and ask yourself, if someone were to ask me what Node.js is,
+    what would be my answer? Tik tok tik tok.
+  </p>
+  <p>
+    If it were for me, I would simply state that Node.js is an
+    <strong
+      ><em>asynchronous, event-driven, Javascript runtime environment</em>
+    </strong>
+    designed to develop
+    <strong><em>scalable network applications</em></strong> . Wow, slow down
+    there and take a break. What do you mean by all this tech jargon you just
+    threw around for me in your definition? Well, let us see what we simply mean
+    by all this.
+  </p>
+  <ol type="a">
+    <li>
+      <strong><em>Asynchronous:- </em></strong>this simply means that two or
+      more processes can be run at the same time without interfering with each
+      other or one waiting for the other.
+    </li>
+    <li>
+      <strong><em>Event Driven:- </em></strong>this means that the flow of a
+      program or process will be determined by an event taking place.
+    </li>
+    <li>
+      <strong><em>Javascript runtime environment:- </em></strong> refers to the
+      provision of libraries, tools, or infrastructure that facilitate the
+      running of Javascript code on a computer.
+    </li>
+    <li>
+      <strong><em>Scalable:-</em></strong> easy to change the size in terms of
+      increasing the size or reducing it.
+    </li>
+    <li>
+      <strong><em>Network application:- </em></strong>a network application is
+      an application that runs on one host that provides communication to
+      another communication on another application running on a different host.
+    </li>
+  </ol>
+  <br />
+  <p>
+    With this understanding of the Node.js terms used in its definition, how
+    does Node.js fall in delivering all these?
+  </p>
+  <ol type="a">
+    <li>
+      <strong> Asynchronous:-</strong> any application developed using Node.js
+      will pass async tasks to an event loop together with a callback. This
+      event pool will efficiently manage a thread pool of tasks and execute them
+      efficiently. Then each callback will be executed as the tasks are
+      complete.
+    </li>
+    <li>
+      <strong>Event Driven:-</strong> From the asynchronous point above, we have
+      noted that with Node.js an event pool will be created. This means that an
+      event has to take place for a Node.js driven process to take place.
+    </li>
+    <li>
+      <strong>Javascript runtime environment:-</strong> Javascript is a
+      programming language. So Node.js will provide the platform upon which the
+      commands are written in JS to run. For example, with Javascript, we have
+      events like click, hover, mousein, and mouseout to mention a few. These
+      events are what trigger Node.js processes.
+    </li>
+    <li>
+      <strong>Scalable:-</strong> with Node.js, we can be able to easily grow
+      the side of the program in terms of tasks it handles without affecting any
+      other tasks.
+    </li>
+    <li>
+      <strong>Network application:-</strong> With Node.js, one can be able to
+      write Javascript on both the front and back end. This means that a
+      full-stack application can be developed using Node.js. The front end will
+      be an application on one host and the back end will be on a different
+      host. However, with Node.js, the back-end application will be able to
+      communicate with the front-end application without there being the need
+      for a server-side programming language involved.
+    </li>
+  </ol>
+  <p>
+    Well, that's awesome. Imagine the power you could possess when developing
+    applications with such unlimited power. You do not need to think too hard
+    and far about such possibilities. Node.js is here to power such
+    possibilities. Now it is time for the rubber to meet the road by taking up a
+    real-time project. For this series, we will develop a contact manager
+    application using Node.js. Take a minute, get that cup of coffee, and let’s
+    do this
+  </p>
+  <br />
+
+  <h2>The crawling stage</h2>
+  <p>
+    For this project, we will develop several APIs including but not limited to
+    managing contacts. In developing the API, this is the Rest API Convention
+    that we will use for the application:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node37.png'%}" alt="" />
+  <p>
+    The CRUD actions will be the processes that will be event-based in our
+    project. For example, the Get all contact action will be initiated by a get
+    all contact contact command. Based on the CRUD actions, we will have
+    different HTTP methods that will be communicated over specific endpoints as
+    we said Node.js delivers network applications. Looking at the structure of
+    the application, we can scale it further in the future by adding a CURD
+    action like export or share contacts that will have a GET HTTP method.
+  </p>
+  <br />
+
+  <h2>Project Setup</h2>
+  <p><strong>Node version and installations</strong></p>
+  <p>
+    The very first step is to ensure that we have Node.js installed on our
+    machines. Open your terminal and run the command
+    <strong>node.js -v</strong> to check the existing version of Node.js. If it
+    does not exist, kindly refer to the official Node.js documentation via:
+    https://nodejs.org/en. It is always advisable to ensure that you are using
+    the latest LTS version of Node.js.
+  </p>
+  <p>
+    If you have nvm on your PC, you can simply use it to install the desired
+    version of Node.js that you wish to have on your PC. You will simply use the
+    command: <strong> nvm install &lt;versionnumber></strong>. Below is an
+    example of an upgrade of node from version 18 to 20 using nvm:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node38.png'%}" alt="" />
+  <p>
+    You can use the command <strong> nvm use &lt;versionnumber> </strong> to
+    switch between the versions of node that you wish to use on your PC:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node39.png'%}" alt="" />
+  <p>
+    We also need to ensure that we set the latest node version as the default on
+    our PC. To do this, we use the command
+    <strong>node alias default &lt;version> </strong>
+  </p>
+  <br />
+
+  <p><strong>Project Directory Setup</strong></p>
+  <p>
+    After confirming that we are running on the latest LTS version of node, we
+    will now create our project directory that will house our project. For this
+    project, I will cd into my Documents directory, create a directory called
+    Node.js and inside it create another directory called expresscontact.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node40.png'%}" alt="" />
+  <p>
+    Inside our project directory, we will have a directory for the endpoints
+    which we will name mycontact-backend. Once we change the directory into the
+    endpoints directory, we will initialize our application using the command
+    npm init. Upon running the app initialization command, several questions
+    will be asked and will provide the following responses:
+  </p>
+  <ol>
+    <li>
+      Package name:- you could name the packages with a valid name. This project
+      has named the packages contacts-api.
+    </li>
+    <li>Version:- We shall leave the version at 1.0.0</li>
+    <li>
+      Description:- you can give a broad description of the project in a single
+      precise line.
+    </li>
+    <li>Entry point:- we shall have the entry point as server.js</li>
+    <li>Test command:- we shall leave it empty.</li>
+    <li>Git repository:- we shall leave it empty.</li>
+    <li>Keywords:- we shall leave them empty.</li>
+    <li>Author:- use your name as the author.</li>
+    <li>License:- MIT</li>
+  </ol>
+  <p>Press enter and type Okay.</p>
+  <img class="img-fluid" src="{% static 'Images/node/node41.png'%}" alt="" />
+  <p>
+    We will then open the application on our VS code editor using the command
+    <strong>code .</strong><br />
+    There is a package.json file that exists in the project folder we just
+    created. It will contain all the settings that we have set above:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node42.png'%}" alt="" />
+  <p>
+    Since we shall push our code to GitHub, there are files that we will not
+    wish to be pushed to GitHub. In respect, we shall have a .gitignore file. In
+    this file, we will add the node modules and the .env file:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node43.png'%}" alt="" />
+  <p>
+    In the .nev file, we will have settings and files that will be used only for
+    development purposes.
+  </p>
+  <br />
+
+  <h2>Creating an Express Server</h2>
+  <p>
+    For us to create the express server, we will create the file that we
+    declared as our entry point for the project. This is the serve.js. Inside
+    the serve.js file, we will create a basic express server. Before we create
+    the express server, we will have to install it on our PC. To install the
+    server, open up the terminal either in Vs code or the pc terminal and run
+    the command <strong>npm install express.</strong> Upon successfully running
+    the command, the results will be:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node44.png'%}" alt="" />
+  <p>
+    You will also notice that in the file structures, there is a node_modules
+    directory that has been added and a package-lock.json file.
+  </p>
+  <p>
+    To streamline our development process, we will also install
+    <strong>nodemon</strong>. This will help us as it will restart the server
+    whenever a change is made hence picking up the change made:
+    <strong> npm i -D nodemon</strong>:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node45.png'%}" alt="" />
+  <p>
+    To verify that the above dependencies have been added, we can take a look at
+    our package.json file to see if they have been listed inside there:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node46.png'%}" alt="" />
+  <p>
+    Having the installations ready, we have to start our server. To run our
+    server, we have to update the scripts in the package.json file. As you can
+    see from the above image and as you can verify from your file, under
+    scripts, we only have one test script. We will then add a start and
+    development script:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node47.png'%}" alt="" />
+  <p>
+    We can now run our server using the command <strong>npm run dev</strong>. We
+    are running dev since we are using a development server:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node48.png'%}" alt="" />
+  <p>
+    From the above image, we can see that the nodemon is awaiting changes so it
+    can restart. This guarantees us that if the change is made, it will be
+    updated without us having to restart the server. Above that, we can see that
+    serve.js has been started. However, it is empty as you can recall. Let us
+    add a simple console message and see what the change will be:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node49.png'%}" alt="" />
+  <p>With consoling the message above, the changes that will take place are:</p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node50.png'%}" alt="" />
+  <p>
+    We can see that nodemon has been restarted and the serve.js started with the
+    message inside the console being printed out. After the changes have been
+    effected, the nodemon then awaits more changes to take effect. Now that we
+    are assured that nodemod is working and is monitoring our script file which
+    is where we are to set up the express server, let us go ahead and set up the
+    server.
+  </p>
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

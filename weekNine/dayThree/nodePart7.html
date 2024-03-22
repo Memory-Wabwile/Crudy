@@ -1,0 +1,147 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <p>
+    Inside the serve.js file, we will define three key variables that we will
+    utilize in creating the express server. Keep in mind that Node.js is a
+    Javascript runtime hence most of the code will be written in JavaScript.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node51.png'%}" alt="" />
+  <p>
+    In the above variables definition, we begin by creating an express variable
+    that will take the express that we just installed at the beginning of the
+    express server creation. After that, we create an app that will call the
+    express function. We then define the port that the server will be accessed
+    by which in this case is 5000.
+  </p>
+  <p>
+    To test our express setup above, let us create a callback function that will
+    print out the port if it is working:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node52.png'%}" alt="" />
+  <p>
+    The app, which contains our express server is listening to port 5000 which
+    will provide access to the server. After listening to the port, it takes in
+    a call-back function that consoles the port via which the server is being
+    accessed. If the setup is successful, we expect the following results:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node53.png'%}" alt="" />
+  <p>
+    So far so good. Before we proceed, we have to ensure that security is
+    paramount in our application. We do not want secrets like the port to be
+    exposed if we push our code to GitHub. We will therefore move the port
+    number to the .env file we created and then bring it to our serve.js file
+    using the variable name that has been saved within the .end file.
+  </p>
+  <p>
+    If you haven’t created a .env file, kindly do. Before we add the port to the
+    .env file, we will install another dependency called dotenv which we will
+    use to import variables from the .env file into our project files. We will
+    isnatll dotenv using the command <strong>npm i dotenv</strong>. In the
+    command, i stands for install.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node54.png'%}" alt="" />
+  <p>
+    The dotenv package has been installed successfully into our project as
+    above, and it will be updated in the packages section of our package.json
+    file as shown below:
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node55.png'%}" alt="" />
+  <p>Now we will populate the .env file with our port:</p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node56.png'%}" alt="" />
+
+  <p>
+    Feel free to use any port. Now coming back to our serve.js file, we will
+    define the use of the dotenv package. The definition will also take in the
+    config() method. We will then define the port again as follows:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node57.png'%}" alt="" />
+  <p>
+    In the port definition, we call the process dependency which will process
+    our .env and check for the variable PORT as that is the variable name as is
+    in the .env. We Then pass the 500 at the end. The result of the callback
+    function above is:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node58.png'%}" alt="" />
+  <p>
+    As you can see from the screenshot above, our server is now running on the
+    server port 5001.
+  </p>
+  <br /><br />
+
+  <h2>Thunder Client Setup</h2>
+  <p>
+    Having set up the server side, we will be able to develop several endpoints
+    that will deliver the various services from our server to the front end of
+    our project. You must test the endpoints for the correct and accurate
+    feedback from the server before availing the endpoint for consumption.
+  </p>
+  <p>
+    There are two ways that we can test our endpoints. We can use PostMan which
+    is an external software or we can install Thunder client as an extension in
+    our VS code editor. The only limitation of using Postman is that you will
+    have to keep on switching between the code editor and the application.
+    However, Thunder Client will be embedded into your code editor hence there
+    is no need to switch between the applications.
+  </p>
+  <p>
+    For this project, we will use Thunder Client. In your VS code, on your left,
+    navigate to the extensions tab search for <strong>Thunder client</strong>,
+    and install the extension.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node59.png'%}" alt="" />
+  <p>
+    After it has been installed successfully, the Thunder client icon will be
+    added just below the extension tab in our Vs Code sidebar. Click on the
+    Thunder client tab and try requesting the app that we have just created.
+    This will be http://localhost:5001. Always keep in mind that it is a server
+    request hence it should be an http request and not a https.
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node60.png'%}" alt="" />
+  <p>
+    Upon running the http get request, we get a 404 error. This means that the
+    requested service from our app is not available. Why don't we create the
+    said service so that we can test the endpoint?
+  </p>
+  <p>In our app serve.js file, we will specify the route for this request:</p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node61.png'%}" alt="" />
+  <p>
+    In the code above, we have added a call to the app express server that makes
+    a get request. It is getting from the endpoint /API/contacts. The get method
+    is taking in both request and response hence the req and res. An arrow
+    function is attached that returns a response to us simply saying
+    <strong>Get all contacts.</strong>
+  </p>
+  <p>
+    If we add the /API/contacts path to our initial path in Thunder Client, we
+    will see the following result:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node62.png'%}" alt="" />
+
+  <p>
+    We get a 200 status that will simply print out the message. A similar result
+    will be witnessed if you run the same endpoint in Postman. If you wish to
+    get a JSON response, simply replace the res. send with res.json and specify
+    the message in the arrow function as shown below:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node63.png'%}" alt="" />
+  <p>The result of the above will be:	</p>
+  
+
+  <img class="img-fluid" src="{% static 'Images/node/node64.png'%}" alt="" />
+  <p>Now we have a JSON response. </p>
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

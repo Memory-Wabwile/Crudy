@@ -1,0 +1,372 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <p>
+    Excellent! Now we are going to introduce route handling. Different routes
+    allow us to serve various content and functionalities within our
+    application. We'll serve different content based on the URL requested.
+  </p>
+
+  <p>Let us add some more code in the <strong> index.js</strong> file.</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+            else if (req.url === "/about") {
+                // Handle the 'about' route
+                res.writeHead(200, { "Content-Type": "text/plain" });
+                res.end("About us!\n");
+                } else {
+                // Handle 404 Not Found for other routes
+                res.writeHead(404, { "Content-Type": "text/plain" });
+                res.end("Page not found!\n");
+              }               
+            
+         </code></pre>
+  </div>
+  <p>Your index.js file should look like this.</p>
+  <img class="img-fluid" src="{% static 'Images/node/node27.png'%}" alt="" />
+  <p>
+    Refresh your browser and let us navigate to the /about url. To do this, open
+    your web browser and access the following URLs to see how different routes
+    are handled:
+  </p>
+  <ul>
+    <li>http://localhost:3000 (root route)</li>
+    <li>http://localhost:3000/about</li>
+    <li>
+      Any other route (e.g., http://localhost:3000/contact) to see the 404
+      response.
+    </li>
+  </ul>
+  <p>
+    Let us proceed to make a simple blog, this allows us to serve and display
+    blog posts dynamically. Create folder named posts on the root directory.
+  </p>
+  <p>
+    We shall start by defining a simple data structure for our blog posts.
+    Create a JSON file in the 'posts' folder and name it 'posts.json' to store
+    your posts.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        [
+        {
+        "title": "My First Blog Post",
+        "content": "This is my very first blog post. Exciting!"
+        }
+        ]        
+         </code></pre>
+  </div>
+  <p>This should be your folder structure at this point.</p>
+  <img class="img-fluid" src="{% static 'Images/node/node28.png'%}" alt="" />
+  <p>
+    To read and modify your blog posts, modify your server to read and display
+    the blog posts when the user accesses a specific route (e.g., '/blog').
+    Replace the code that we recently added on about with the code below for
+    displaying the posts.json file
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        else if (req.url === "/blog") {
+            // Read and send the blog posts
+            fs.readFile("posts/posts.json", "utf8", (err, data) => {
+            if (err) {
+            res.writeHead(500, { "Content-Type": "text/plain" });
+            res.end("Internal Server Error\n");
+            } else {
+            const posts = JSON.parse(data);
+            res.writeHead(200, { "Content-Type": "text/html" });
+            const postHTML = posts
+            .map((post) => `&lt;h2>${post.title}&lt;/h2>&lt;p>${post.content}&lt;/p>`)
+            .join("");
+            res.end(`&lt;h1>Blog&lt;/h1>${postHTML}`);
+            }
+            });
+            } else {
+            // Handle 404 Not Found for other routes
+            res.writeHead(404, { "Content-Type": "text/plain" });
+            res.end("Page not found!\n");
+        }                
+         </code></pre>
+  </div>
+  <p>
+    Ensure nodemon is still running on the terminal then navigate to the
+    browser. Open your web browser and access
+    <strong>http://localhost:3000/blog</strong>. You should see your blog posts
+    displayed.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node29.png'%}" alt="" />
+  <p>
+    Next we are going to add static files, CSS and images to our HTML pages.
+    This will allow us to style our page and include images. We will start by
+    creating a folder named public. Inside the public folder, create another
+    folder named images and a file called style.css. Inside the images folder,
+    add an image that we will render on the browser. This should be your folder
+    structure at this point.
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node30.png'%}" alt="" />
+  <p>
+    In this part we shall need to install the
+    <strong><em>express static middleware</em></strong
+    >. We do this to serve static files, we shall use the express.static
+    middleware. For this part, we shall need the Express.js framework. We will
+    dive deep into express js framework later on.
+  </p>
+  <p>
+    First we have to install express. On the terminal run the command below to
+    install express.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $   npm install express          
+         </code></pre>
+  </div>
+  <p>
+    Obviously we have to modify our server code to serve static files. To do
+    this we shall use Express as shown in the code below. Head over to the
+    <strong>index.js</strong> file and let us modify our initial code to this.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        const express = require('express');
+        const fs = require('fs');
+        const app = express();
+        const port = 3000;
+        
+        
+        // Serve static files from the 'public' folder
+        app.use(express.static('public'));
+        
+        
+        app.get('/', (req, res) => {
+        // Serve the HTML page
+        fs.readFile('index.html', 'utf8', (err, data) => {
+        if (err) {
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal Server Error\n');
+        } else {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(data);
+        }
+        });
+        });        
+        
+        app.get('/blog', (req, res) => {
+        // Read and send the blog posts
+        fs.readFile('posts/posts.json', 'utf8', (err, data) => {
+        if (err) {
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal Server Error\n');
+        } else {
+        const posts = JSON.parse(data);
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        const postHTML = posts.map(post => `&lt;h2>${post.title}&lt;/h2>&lt;p>${post.content}&lt;/p>`).join('');
+        res.end(`&lt;h1>Blog&lt;/h1>${postHTML}`);
+        }
+        });
+        });
+        
+        
+        app.listen(port, () => {
+        console.log('Server is running on port ' + port);
+        });
+        
+         </code></pre>
+  </div>
+  <p>
+    Now, in your HTML file <strong>(index.html)</strong>, you can link to the
+    CSS and include images as follows: remember to rename the image to the name
+    of the image that you downloaded.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-html">
+&lt;!-- index.html -->
+&lt;!DOCTYPE html>
+&lt;html>
+    &lt;head>
+        &lt;title>My Web Server&lt;/title>
+    &lt;link rel="stylesheet" type="text/css" href="/style.css">
+    &lt;/head>
+    &lt;body>
+        &lt;h1>Welcome to My Web Server&lt;/h1>
+        &lt;img src="/images/images.jpeg" alt="Example Image">
+    &lt;/body>
+&lt;/html>        
+         </code></pre>
+  </div>
+  <p>Let us add color to our title in the <strong>style.css</strong> file.</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-css">
+        h1{
+            color: blueviolet;
+        }                  
+         </code></pre>
+  </div>
+  <p>
+    Run your server again by executing nodemon index.js in your terminal. Open
+    your web browser and access http://localhost:3000. You should see the HTML
+    page with the CSS styles and the displayed image as shown below.
+  </p>
+  <img
+    class="img-fluid"
+    src="{% static 'Images/node/node31.png'%}"
+    alt=""
+  /><br /><br />
+
+  <h2>Introduction to Express Js framework.</h2>
+  <p>
+    Express is a fast, unopinionated minimalist web framework for Node.js. Head
+    over to the official documentation of express
+    <a href="https://expressjs.com/" target="_blank">here</a> . It is always
+    good practice to go through the documentation of a language or a framework
+    in order to have a deeper understanding of it. On the navbar, press on
+    ‘guide. Here you will find the documentation of different things that we can
+    do with express.js framework.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node32.png'%}" alt="" />
+
+  <p>
+    Go through the documentation.then let us go back to visual studio code. We
+    will introduce the Express.js framework to our existing web server. Express
+    simplifies the process of creating web applications, providing a more
+    structured and efficient way to handle routes and middleware. Start by
+    installing Express.js,If you haven't already installed Express.js, you can
+    do so by running the following command:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+
+        $ npm i express              
+         </code></pre>
+  </div>
+  <p>
+    After the installation is complete, let us now move onto the index.js file .
+    Modify your server code to use Express. We will start by creating an Express
+    application, setting up basic routes, and using static files as we did
+    previously.
+  </p>
+  <p><strong>index.js</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        const express = require('express');
+        const app = express();
+        const port = 3000;        
+        
+        // Serve static files from the 'public' folder
+        app.use(express.static('public'));        
+        
+        // Define routes
+        app.get('/', (req, res) => {
+        // Serve the HTML page
+        res.sendFile(__dirname + '/index.html');
+        });        
+        
+        app.get('/blog', (req, res) => {
+        // Read and send the blog posts
+        res.sendFile(__dirname + '/posts/posts.json');
+        });        
+        
+        app.listen(port, () => {
+        console.log('Server is running on port ' + port);
+        });         
+         </code></pre>
+  </div>
+  <p>
+    Now run your server by executing node index.js. Do not forget to test the
+    server as usual, open your web browser and access http://localhost:3000. You
+    should see the HTML page with the CSS styles and the displayed image.
+  </p>
+
+  <p>
+    So why Express.js? By introducing Express.js, you are making your server
+    more structured and efficient. In the following parts, we shall continue to
+    explore Express's capabilities and add more features to our web application.
+  </p>
+  <p>
+    Let us continue building upon the Express.js framework by handling more
+    complex routes and introducing middleware. Express makes it easy to
+    structure your application and add functionality in an organized manner.
+  </p>
+  <p>
+    We shall start by adding more complex routes. For example, let's create a
+    route for individual blog posts and an 'about' page. On the root directory,
+    create an about.html file then add the content below.
+  </p>
+  <p><strong>about.html</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-html">
+        &lt;!DOCTYPE html>
+        &lt;html>
+            &lt;head>
+                &lt;title>My Web Server&lt;/title>
+                &lt;link rel="stylesheet" type="text/css" href="/style.css">
+            &lt;/head>
+            &lt;body>
+                &lt;h1>This is the about page&lt;/h1>
+            &lt;/body>
+        &lt;/html>                   
+         </code></pre>
+  </div>
+  <p>Let us now add the routes in the <strong>index.js</strong> file.</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        // ... previous code ...
+
+        // New route for individual blog posts
+        app.get("/blog/:id", (req, res) => {
+        // Read and send an individual blog post
+        const postId = req.params.id;
+        // Load the blog post with postId from the 'posts/posts.json' file
+        // Send it to the client
+        });        
+        
+        // Route for the 'about' page
+        app.get("/about", (req, res) => {
+        res.sendFile(__dirname + "/about.html");
+        });                         
+         </code></pre>
+  </div>
+  <p>
+    Express middleware functions are a powerful feature that allow you to
+    perform tasks such as logging, parsing request data, or authentication
+    before the final route handler. We will introduce a simple middleware to log
+    requests.
+  </p>
+  <p>
+    Now let us run the server by executing node index.js. Do not forget to test
+    the server, to do this, Open your web browser and access the following URLs
+    to see how the new routes and middleware are handled:
+  </p>
+  <ul>
+    <li>http://localhost:3000/blog/1</li>
+    <li>http://localhost:3000/about</li>
+  </ul>
+  <p>
+    By handling complex routes and introducing middleware, you're improving the
+    organization and functionality of your server. With the first route, you
+    should be able to see the results below in your browser.
+  </p>
+  <p>Both routes should be working correctly.</p>
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

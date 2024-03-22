@@ -1,0 +1,514 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h1>User authentication</h1>
+  <p>
+    User authentication is a fundamental aspect of web applications that ensures
+    user data security and controls access to various parts of your application.
+    In this section of the tutorial, we will explore how to implement user
+    authentication in your Laravel application. User authentication in Laravel
+    is implemented using the Laravel Auth package. The Auth package provides a
+    number of features for authenticating users, including:
+  </p>
+  <ol>
+    <li>
+      Session-based authentication: This is the default authentication method in
+      Laravel. Users are authenticated by storing a session ID in their browser
+      cookies.
+    </li>
+    <li>
+      Token-based authentication: This authentication method uses JSON Web
+      Tokens (JWTs) to authenticate users. JWTs are self-contained tokens that
+      contain all of the information necessary to authenticate a user.
+    </li>
+    <li>
+      API authentication: The Auth package also provides support for API
+      authentication. This allows you to authenticate users without having to
+      redirect them to a login page.
+    </li>
+  </ol>
+  <br />
+  <p>
+    Laravel comes with a robust built-in authentication system that makes it
+    easy to implement user registration, login, and password reset features.
+    This system includes various authentication controllers and views, as well
+    as the necessary routes:
+  </p>
+
+  <ul>
+    <li>User Registration</li>
+    <p>
+      To enable user registration in your application, you can use the
+      RegisterController provided by Laravel. This controller manages the
+      registration process and stores user data in your database. The
+      registration view is also included.
+    </p>
+
+    <li>User Login</li>
+    <p>
+      Laravel's LoginController manages the user login process. Users can log in
+      using their email and password. The login view is provided by default as
+      well.
+    </p>
+    <li>Password Reset</li>
+    <p>
+      Laravel's authentication system includes the ability to reset user
+      passwords. Users can request a password reset by providing their email
+      address. A password reset email is sent to the user, allowing them to set
+      a new password.
+    </p>
+  </ul>
+  <br />
+  <p>Now let us see how to implement these features discussed above:</p>
+  <p>
+    To implement user authentication in your Laravel application, follow these
+    steps:
+  </p>
+
+  <ol>
+    <li>Install the Laravel Auth package:</li>
+
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        $ composer require laravel/ui
+     </code></pre>
+    </div>
+    <p>
+      This command will install the Laravel Auth package, as well as the Laravel
+      UI package. Laravel UI is a front-end framework that provides a number of
+      components for building user interfaces, including login and registration
+      forms.
+    </p>
+
+    <li>
+      Run the Laravel UI Artisan command to install the authentication
+      scaffolding:
+    </li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        $ php artisan ui vue --auth
+     </code></pre>
+    </div>
+    <p>
+      This command will install the authentication scaffolding for your Laravel
+      application. This includes the login and register views, controllers, and
+      routes.
+    </p>
+
+    <li>
+      Configure the Auth package in the
+      <strong>config/auth.php</strong> configuration file.
+      <br />
+      The <strong> config/auth.php</strong> configuration file contains a number
+      of settings for the Auth package. You can configure the authentication
+      method (session-based, token-based, or API), the login and register
+      routes, and the authentication middleware.
+    </li>
+
+    <li>
+      Create a <strong>LoginController</strong> and
+      <strong>RegisterController</strong> to handle user login and registration.
+      The <strong>LoginController</strong> and
+      <strong>RegisterController</strong> will handle the login and registration
+      requests, respectively. You can customize these controllers to meet your
+      specific needs.
+    </li>
+
+    <li>
+      Add routes to your <strong>routes/web.php</strong> file to handle the
+      login and registration requests. The <strong>routes/web.php</strong> file
+      contains the routes for your web application. You will need to add routes
+      to handle the login and registration requests:
+    </li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            Route::get('/login', [LoginController::class, 'login']);
+            Route::post('/login', [LoginController::class, 'postLogin']);
+            Route::get('/register', [RegisterController::class, 'register']);
+            Route::post('/register', [RegisterController::class, 'postRegister']);
+       </code></pre>
+    </div>
+    <li>
+      Add authentication middleware to the routes that you want to protect.<br />The
+      Auth package provides a number of authentication middleware classes. You
+      can use these middleware classes to protect your routes. For example, to
+      protect the /admin route, you would add the auth middleware to the
+      route.<br />
+      Here is how we will protect the /admin route using the auth middleware:
+    </li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            Route::get('/admin', function () {
+                // ...
+            })->middleware('auth');
+         </code></pre>
+    </div>
+  </ol>
+  <p>
+    This will ensure that only authenticated users can access the /admin route.
+  </p>
+
+  <p>Let us see how a <strong>LoginController</strong> handles user login:</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        namespace App\Http\Controllers\Auth;
+
+        use App\Http\Controllers\Controller;
+        use Illuminate\Http\Request;        
+        
+        class LoginController extends Controller
+        {
+            public function login(Request $request)
+            {
+                $credentials = $request->validate([
+                    'email' => 'required|email',
+                    'password' => 'required',
+                ]);        
+        
+                if (!Auth::attempt($credentials)) {
+                    return redirect()->back()
+                        ->withErrors(['email' => 'Invalid credentials.']);
+                }        
+        
+                return redirect()->intended();
+            }
+        }        
+     </code></pre>
+  </div>
+  <p>
+    The <strong>namespace</strong> line specifies the namespace for the
+    controller. The use lines import the Controller class and the Request class.
+  </p>
+  <p>
+    The <strong>class</strong> line defines the
+    <strong>LoginController</strong> class. This class extends the
+    <strong>Controller</strong> class. The <strong>login()</strong> method
+    handles the login request. This method takes a
+    <strong>Request</strong> object as input. The
+    <strong>validate()</strong> method validates the login form data. The
+    validation rules in this case are:
+  </p>
+  <ul>
+    <li>The email field is required and must be a valid email address.</li>
+    <li>password: The password field is required.</li>
+  </ul>
+  <p>
+    If the validation is successful, the <strong>validate()</strong> method
+    returns an array containing the validated data. Otherwise, the
+    <strong>validate()</strong> method throws a ValidationException exception.
+  </p>
+  <p>
+    The <strong>attempt()</strong> method authenticates the user using the given
+    credentials. If the authentication is successful, the
+    <strong>attempt()</strong> method returns true. Otherwise, the attempt()
+    method returns false. If the authentication is unsuccessful, the
+    <strong>login()</strong> method redirects the user back to the login page
+    with an error message.
+  </p>
+  <p>
+    If the authentication is successful, the <strong>login()</strong> method
+    redirects the user to the intended page. The intended page is the page that
+    the user was trying to access before they were redirected to the login page.
+  </p>
+  <p>
+    Let us see how a <strong>RegisterController</strong> handles user login:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        namespace App\Http\Controllers\Auth;
+
+        use App\Http\Controllers\Controller;
+        use App\Models\User;
+        use Illuminate\Http\Request;        
+        
+        class RegisterController extends Controller
+        {
+            public function register(Request $request)
+            {
+                $request->validate([
+                    'name' => 'required|string',
+                    'email' => 'required|email|unique:users',
+                    'password' => 'required|min:8|confirmed',
+                ]);        
+        
+                $user = User::create([
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'password' => Hash::make($request->input('password')),
+                ]);        
+        
+                Auth::login($user);        
+        
+                return redirect()->intended();
+            }
+        }               
+     </code></pre>
+  </div>
+  <p>The <strong>use</strong> line imports the Request class.</p>
+  <p>
+    The <strong>register()</strong> method handles the registration request.
+    This method takes a Request object as input.
+  </p>
+  <p>
+    The <strong>validate()</strong> method validates the registration form data.
+    The validation rules in this case are:
+  </p>
+  <ul>
+    <li>name: The name field is required and must be a string.</li>
+    <li>
+      email: The email field is required, must be a valid email address, and
+      must be unique in the users table.
+    </li>
+    <li>
+      password: The password field is required, must be at least 8 characters
+      long, and must match the confirmation password field.
+    </li>
+  </ul>
+  <p>
+    If the validation is successful, the <strong>validate()</strong> method
+    returns an array containing the validated data. Otherwise, the
+    <strong>validate()</strong> method throws a
+    <strong>ValidationException</strong> exception.
+  </p>
+  <p>
+    The <strong>create()</strong> method on the User model creates a new user
+    record in the database. The create() method takes an array of data as input.
+    The data in the array is used to create the new user record.<br />The
+    create() method is passed the following data:
+  </p>
+  <ul>
+    <li>name: The user's name.</li>
+    <li>email: The user's email address.</li>
+    <li>password: The user's password.</li>
+  </ul>
+  <p>
+    The <strong>Hash::make()</strong> method hashes the user's password before
+    it is saved to the database. This helps to protect the user's password from
+    being compromised.
+  </p>
+  <p>The <strong>login()</strong> method logs in the user.</p>
+  <p>
+    The <strong>intended()</strong> method redirects the user to the intended
+    page. The intended page is the page that the user was trying to access
+    before they were redirected to the registration page.
+  </p>
+
+  <p>
+    Once you have implemented user authentication in your Laravel application,
+    you can start protecting your routes by adding authentication middleware.
+    For example, to protect the <strong>/admin</strong> route, you would add the
+    following middleware to the route in your
+    <strong>routes/web.php</strong> file:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      Route::get('/admin', function () {
+        // ...
+      })->middleware('auth');             
+     </code></pre>
+  </div>
+  <p>
+    This will ensure that only authenticated users can access the /admin route.
+  </p>
+  <p>
+    You can customize the authentication views, controllers, and routes to match
+    your application's design and requirements. These are located in the
+    <strong>resources/views/auth, app/Http/Controllers/Auth,</strong> and
+    <strong>routes/web.php</strong> files, respectively.
+  </p>
+  <p>
+    To recap, user authentication is a crucial aspect of web applications, and
+    Laravel makes it easy to implement. Laravel's built-in authentication system
+    provides controllers, views, and routes for user registration, login, and
+    password reset. You can further customize and protect routes to ensure
+    secure and controlled access to your application's features.
+  </p>
+  <br /><br />
+
+  <h1>Model relationships</h1>
+  <p>
+    In this part we will dive into model relationships in Laravel. Model
+    relationships allow you to define how different database tables are related
+    to each other, enabling you to retrieve and manipulate related data with
+    ease.
+  </p>
+  <p>
+    Model relationships in Laravel are used to define the associations between
+    database tables. There are several types of relationships:
+  </p>
+  <ol>
+    <li>
+      <strong>One-to-One:</strong> In a one-to-one relationship, one record in a
+      table is associated with one record in another table.
+    </li>
+    <li>
+      <strong>One-to-Many:</strong> In a one-to-many relationship, one record in
+      a table is associated with multiple records in another table.
+    </li>
+    <li>
+      <strong>Many-to-One</strong> (Belongs To): Many records in a table are
+      associated with one record in another table.
+    </li>
+    <li>
+      <strong>Many-to-Many:</strong> Many records in one table are associated
+      with many records in another table.
+    </li>
+    <li>
+      <strong>Polymorphic:</strong> This relationship allows you to define a
+      relationship between two models that may be of different types. For
+      example, a post might have many comments, and those comments could be of
+      different types, such as TextComment or ImageComment.
+    </li>
+  </ol>
+  <p>
+    To define a model relationship, you can use the
+    <strong>belongsTo(), hasMany(), belongsToMany(), hasOneThrough()</strong>,
+    and <strong>morphMany()</strong> methods on your Eloquent models.
+  </p>
+  <p>
+    Time to move on and define some relationship, the old age question of what
+    are we? Think of a blog application with two models: User and Post. A User
+    can have many Post records, and a Post belongs to one User.
+  </p>
+  <br />
+
+  <p><strong>One-to-Many Relationship</strong></p>
+  <p>
+    In the User model, you can define a one-to-many relationship to represent
+    that a user has many posts:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+class User extends Model
+{
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+}           
+     </code></pre>
+  </div>
+  <p>
+    The code above defines a one-to-many relationship between the User and Post
+    models. This means that a single user can have many posts, but a single post
+    can only belong to one user. The <strong>hasMany()</strong> method on the
+    User model tells Laravel that a user can have many posts. The
+    <strong>Post::class</strong> argument to the
+    <strong>hasMany()</strong> method tells Laravel that the relationship is
+    with the Post model.
+  </p>
+  <p>
+    In the Post model, you can define a many-to-one (belongs to) relationship to
+    represent that a post belongs to a user:
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      class Post extends Model
+{
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}         
+     </code></pre>
+  </div>
+  <p>
+    The code above defines a belongs-to relationship between the Post and User
+    models. This means that a single post can only belong to one user, but a
+    user can have many posts.<br />
+    The <strong>belongsTo()</strong> method on the Post model tells Laravel that
+    a post belongs to one user. The <strong>User::class</strong> argument to the
+    <strong>belongsTo()</strong> method tells Laravel that the relationship is
+    with the User model.
+  </p>
+  <br />
+
+  <p>
+    With these relationships defined, you can easily retrieve a user's posts or
+    the author of a post. Once you've defined relationships between your models,
+    you can retrieve related data using Eloquent. For example, to get all the
+    posts of a user:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      $user = User::find(1);
+      $posts = $user->posts;      
+     </code></pre>
+  </div>
+  <p>
+    The code above retrieves all of the posts for a given user using the
+    Eloquent model relationships in Laravel.
+  </p>
+
+  <p>
+    The <strong>User::find(1)</strong> code finds the user with the ID of 1. The
+    <strong>$posts = $user->posts</strong> code then retrieves all of the posts
+    for that user. This is possible because of the one-to-many relationship that
+    is defined between the User and Post models. This is possible because of the
+    <strong>one-to-many</strong>
+    relationship that is defined between the User and Post models. The
+    <strong>one-to-many</strong> relationship means that a single user can have
+    many posts, but a single post can only belong to one user. This code can be
+    used in a variety of ways. For example, it could be used to display a list
+    of all of the posts that a user has written, or to allow users to edit their
+    own posts.
+  </p>
+
+  <p>You can also find the author of a post:</p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      $post = Post::find(1);
+      $user = $post->user;      
+     </code></pre>
+  </div>
+  <p>
+    The <strong>Post::find(1)</strong> code finds the post with the ID of 1. The
+    <strong>$user = $post->user</strong> code then retrieves the user for that
+    post. This is possible because of the belongs-to relationship that is
+    defined between the Post and User models.
+  </p>
+  <p>
+    The Post::find() method takes the ID of a post as input and returns the post
+    object. In this case, the <strong>find()</strong> method is used to find the
+    post with the ID of 1.
+  </p>
+  <p>
+    The <strong>$post->user</strong> code retrieves the user for the post. This
+    is possible because of the belongs-to relationship that is defined between
+    the Post and User models. The belongs-to relationship means that a single
+    post can only belong to one user, but a user can have many posts.
+  </p>
+  <p>
+    This code can be used in a variety of ways. For example, it could be used to
+    display the author of a post, or to allow users to vote on posts.
+  </p>
+  <p>
+    To recap, model relationships in Laravel allow you to define and work with
+    the associations between database tables. This makes it easier to retrieve
+    and manipulate related data, creating more organized and efficient
+    applications.
+  </p>
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

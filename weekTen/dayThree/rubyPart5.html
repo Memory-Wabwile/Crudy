@@ -1,0 +1,486 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h1>Property Finder Application</h1>
+  <p>
+    Now that we have learned alot about ruby, let us create a real estate
+    application using ruby on rails. First things first,let us set up our
+    application.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+
+        $ rails new  property-finder --database=postgresql --skip-test --skip-action-cable --skip-active-storage --skip-turbolinks --skip-yarn
+
+        
+     </code></pre>
+  </div>
+  <p>
+    After creating the project successfully, navigate to the project then open
+    using visual studio code
+  </p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby1.png'%}" alt="" />
+  <p>
+    Create a github repository called property-finder and as you work, remember
+    to push your code to github.
+  </p>
+  <p>
+    The next thing that we are going to do is to set up the database. To do
+    this, run the command below on the terminal
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ rails db:setup        
+     </code></pre>
+  </div>
+  <p>
+    After the database has been successfully set up, run the command below to
+    apply the migrations.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ rails db:migrate        
+     </code></pre>
+  </div>
+  <p>
+    This is the results on the terminal. You will notice that a database schema
+    has been added to the left among the other files and folders.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby2.png'%}" alt="" />
+  <p>
+    Next, we want to set up our first controller. We will call this controller
+    public and we will create a main method within the public controller. Run
+    the command below to set up the controller.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ rails g controller public main       
+     </code></pre>
+  </div>
+  <p>
+    We are going to use this controller in our home page. Click on the
+    <strong>config</strong> folder then click on
+    <strong>routes.rb</strong> file. Replace get with root on the second line of
+    the file. Your routes.rb file should now look like this.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        Rails.application.routes.draw do
+        root to: 'public#main'      
+     </code></pre>
+  </div>
+  <p>
+    This will be the first page that users see once they visit our
+    application<br />
+    Run the command below in the terminal so that we can see how the page looks
+    on the browser at this point.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ rails s       
+     </code></pre>
+  </div>
+  <p>
+    Navigate to <strong>localhost:3000</strong> on your browser to be able to
+    see your application up and running. You’ll see the outcome below on your
+    browser.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby3.png'%}" alt="" />
+  <p>
+    Here it has given us the path where we can find the main.html file. Follow
+    the path above to access the <strong> main.html.erb</strong> file and add
+    the code below.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;h1> Search for your new home today&lt;/h1>       
+     </code></pre>
+  </div>
+  <p>
+    Next, let us set up our user accounts. We will use the devise gem for this.
+    Click on vendor then on Gemfile and add the code below just after jbuilder.
+  </p>
+  <p><strong> vendor/Gemfile </strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        gem "devise"       
+     </code></pre>
+  </div>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby4.png'%}" alt="" />
+
+  <p>Next we run the command below to install devise.</p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ bundle
+        $ bundle install
+        $ rails g devise:install             
+     </code></pre>
+  </div>
+
+  <p>You’ll see a list from number 1 to 4.</p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby5.png'%}" alt="" />
+
+  <p>
+    Next we’ll have to upgrade this environment. Copy the config from number 1
+    and in our vscode, follow the path
+    <strong>config/environments/development.rb</strong> and let us paste it
+    there.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }            
+     </code></pre>
+  </div>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby6.png'%}" alt="" />
+  <p>We already did step 2 so we’ll skip to step 3.</p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby7.png'%}" alt="" />
+  <p>And finally step 4. Run the command below on the terminal.</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+            $ rails g devise:views           
+         </code></pre>
+  </div>
+  <p>
+    Run the command below to set up devise. You can find more
+    <a href="https://github.com/heartcombo/devise " target="_blank">here</a>
+    on devise.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ rails g devise Account         
+         </code></pre>
+  </div>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+            config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }            
+         </code></pre>
+  </div>
+  <p>
+    This will create a migration for us. Trackable and confirmable have been
+    commented out . remove the comments.
+  </p>
+  <p><strong> db/migrate/</strong>(your file)</p>
+
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby8.png'%}" alt="" />
+  <p>
+    On the same file, scroll up to database authenticatable and add the fields
+    below. With this will have to confirm their email,first and last name, email
+    , we will be able to see what IP address they sign in with and a profile
+    url. This will enable us to customize the accounts a little bit and make
+    them user friendly.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        ## Database authenticatable
+        t.string :first_name, null: false, default: ""
+        t.string :last_name, null: false, default: ""
+        t.string :email, null: false, default: ""
+        t.string :encrypted_password, null: false, default: ""
+        t.string :url
+                   
+         </code></pre>
+  </div>
+  <p>
+    We will be able to see what the agent's name is, go to their profile url
+    etc.<br />
+
+    Next, we will use the rails scaffold command to create our properties now.
+    This should create a lot of the views and the migrations. Run the command
+    below
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $  rails g scaffold Property name:string address:string price:integer rooms:integer bathrooms:integer photo:string           
+         </code></pre>
+  </div>
+  <p>
+    We will create the name column, address, price etc.<br />
+
+    This will create another migrations file and when you open it, you’ll see
+    the outcome below.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby9.png'%}" alt="" />
+  <p>
+    Now we have to connect the properties to the accounts and to do this, on the
+    same file just before name, add the code below.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        t.references :account           
+         </code></pre>
+  </div>
+  <p>Now migrate the database. Run the command below on the terminal.</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $  rails db:migrate          
+         </code></pre>
+  </div>
+  <p>
+    This will create another file for us under app/models named account.rb
+    Modify the code in this page to include trackable, confirmable and showing
+    that an agent can have many properties
+  </p>
+
+  <p><strong>app/models/account.rb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        class Account &lt; ApplicationRecord
+        # Include default devise modules. Others available are:
+        # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+        devise :database_authenticatable, :registerable,
+        :recoverable, :rememberable, :validatable , :trackable , :confirmable
+        
+        
+        has_many :properties
+        end
+                 
+         </code></pre>
+  </div>
+  <p>
+    Let us now add some additional content to our page. We want to have a menu ,
+    home page, auth page
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        class Account &lt; ApplicationRecord
+        # Include default devise modules. Others available are:
+        # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+        devise :database_authenticatable, :registerable,
+        :recoverable, :rememberable, :validatable , :trackable , :confirmable
+        
+        
+        has_many :properties
+        end
+                 
+         </code></pre>
+  </div>
+  <p>
+    Let us now add some additional content to our page. We want to have a menu ,
+    home page, auth page
+  </p>
+
+  <p><strong>app/views/layouts/application.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;!DOCTYPE html>
+        &lt;html>
+        &lt;head>
+        &lt;title>PropertyFinder&lt;/title>
+        &lt;meta name="viewport" content="width=device-width,initial-scale=1">
+        &lt;%= csrf_meta_tags %>
+        &lt;%= csp_meta_tag %>
+        
+        
+        &lt;%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+        &lt;%= javascript_importmap_tags %>
+        &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        &lt;/head>
+        
+        
+        &lt;body>
+        &lt;header>
+        &lt;%= render "layouts/nav/public" %>
+        &lt;/header>
+        &lt;p class="notice">&lt;%= notice %>&lt;/p>
+        &lt;p class="alert">&lt;%= alert %>&lt;/p>
+        
+        
+        &lt;%= yield %>
+        &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">&lt;/script>
+        &lt;script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">&lt;/script>
+        &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">&lt;/script>
+        
+        
+        &lt;/body>
+        &lt;/html>
+             
+         </code></pre>
+  </div>
+  <p>
+    We have included bootstrap5 links. Let us then create the specified file.
+    Create a folder inside the layouts folder and name it nav. Inside the nav
+    folder create a file named _public.html.erb and add the code below
+  </p>
+  <p>
+    We are going to add our navigation bar to the file that we have just
+    created. Copy any navigation bar of your choice from bootstrap then we can
+    modify it later .
+  </p>
+
+  <p><strong>app/views/layouts/nav/_public.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top ">
+        &lt;div class="container-fluid">
+        &lt;a class="navbar-brand" href="#">Navbar&lt;/a>
+        &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        &lt;span class="navbar-toggler-icon">&lt;/span>
+        &lt;/button>
+        &lt;div class="collapse navbar-collapse" id="navbarSupportedContent">
+        &lt;ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        &lt;li class="nav-item">
+        &lt;a class="nav-link active" aria-current="page" href="#">Home&lt;/a>
+        &lt;/li>
+        &lt;li class="nav-item">
+        &lt;a class="nav-link" href="#">Latest&lt;/a>
+        &lt;/li>
+        &lt;li class="nav-item dropdown">
+        &lt;a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Search
+          &lt;/a>
+          &lt;ul class="dropdown-menu">
+          &lt;li>&lt;a class="dropdown-item" href="#">Action&lt;/a>&lt;/li>
+          &lt;li>&lt;a class="dropdown-item" href="#">Another action&lt;/a>&lt;/li>
+            &lt;li>&lt;hr class="dropdown-divider">&lt;/li>
+            &lt;li>&lt;a class="dropdown-item" href="#">Something else here&lt;/a>&lt;/li>
+            &lt;/ul>
+            &lt;/li>
+            &lt;li class="nav-item">
+            &lt;a class="nav-link" href="#" > News &lt;/a>
+            &lt;/li>
+            &lt;li class="nav-item">
+            &lt;a class="nav-link" href="#" > Advertising &lt;/a>
+            &lt;/li>
+            &lt;li class="nav-item">
+            &lt;%= link_to "Log In", new_account_session_path, class:"nav-link" %>
+            &lt;/li>
+            &lt;li class="nav-item">
+            &lt;%= link_to "Sign Up", new_account_registration_path, class:"nav-link" %>
+            &lt;/li>
+            &lt;/ul>
+            &lt;form class="d-flex" role="search">
+            &lt;input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            &lt;button class="btn btn-outline-success" type="submit">Search&lt;/button>
+            &lt;/form>
+            &lt;/div>
+            &lt;/div>
+            &lt;/nav>
+                   
+           </code></pre>
+  </div>
+  <p>
+    To check out the routes in your application, run the command below on the
+    terminal.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    $ rails routes
+               
+       </code></pre>
+  </div>
+
+  <p>Let’s modify the main.html file</p>
+  <p><strong>app/views/public/main.html.erb</strong></p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    &lt;main role="main">
+
+
+      &lt;div class="jumbotron">
+      &lt;div class="container">
+      &lt;h1 class="display-3"> Search for your new home today.. &lt;/h1>
+      &lt;p> find the perfect house in a few clicks. We have got you covered &lt;/p>
+      &lt;p>&lt;a class="btn btn-primary btn-lg" href="#" role="button"> Learn More &lt;/a>&lt;/p>
+      &lt;/div>
+      &lt;/div>
+      
+      
+      &lt;div class="container">
+      &lt;div class="row">
+      &lt;div class="col-md-4">
+      &lt;h2>Heading&lt;/h2>
+      &lt;p> Lovely 3-bedroom house in a great neighborhood! This charming home features a spacious living room with fireplace, a large kitchen with stainless steel appliances, and a master bedroom with its own private bathroom. &lt;/p>
+      &lt;p> &lt;a class="btn btn-secondary" href="#" role="button"> View details &lt;/a> &lt;/p>
+      &lt;/div>
+      
+      
+      &lt;div class="col-md-4">
+      &lt;h2>Heading&lt;/h2>
+      &lt;p> The backyard is perfect for entertaining, with a large patio and a built-in barbecue. This house is conveniently located near schools, parks, and shopping. Do not miss out on this great opportunity! &lt;/p>
+      &lt;p> &lt;a class="btn btn-secondary" href="#" role="button"> View details &lt;/a> &lt;/p>
+      &lt;/div>
+      
+      
+      &lt;div class="col-md-4">
+      &lt;h2>Heading&lt;/h2>
+      &lt;p> This charming home has a spacious living room with fireplace, a large kitchen with stainless steel appliances, and a master bedroom . The backyard is perfect for entertaining, with a large patio and a built-in barbecue. &lt;/p>
+      &lt;p> &lt;a class="btn btn-secondary" href="#" role="button"> View details &lt;/a> &lt;/p>
+      &lt;/div>
+      &lt;/div>
+      
+      
+      &lt;hr>
+      &lt;/div>
+  &lt;/main>
+      
+               
+       </code></pre>
+  </div>
+
+  <p>Let’s add a footer to our application.</p>
+  <p>
+    We first need to include a footer in the application.html.erb file. Add the
+    code below after yield, just before the script tags
+  </p>
+  <p><strong>app/views/layouts/application.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      &lt;%= render "layouts/footer" %>               
+       </code></pre>
+  </div>
+
+  <p>
+    Next, we follow this path to create the footer file. Create a file called
+    _footer.html.erb inside the layouts folder then copy and paste the footer
+    below.
+  </p>
+
+  <p><strong>app/views/layouts/_footer.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      &lt;footer class="container">
+        &lt;p>&copy; Property Finder 2023 &lt;/p>
+      &lt;/footer>
+               
+       </code></pre>
+  </div>
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

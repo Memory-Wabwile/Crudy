@@ -1,0 +1,631 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h1>Access control</h1>
+  <p>
+    Access control is a critical aspect of web applications, as it ensures that
+    users can only access the resources and features for which they have
+    permission. In this section, we'll explore how to manage user permissions
+    and roles in your Laravel application.
+  </p>
+  <p>
+    User permissions and roles are a critical aspect of web applications, as
+    they ensure that users can only access the resources and features for which
+    they have permission. Laravel provides a number of features for managing
+    user permissions and roles, including:
+  </p>
+  <ul>
+    <li>
+      Permissions: Permissions are individual actions that a user can perform,
+      such as create posts or edit users.
+    </li>
+    <li>
+      Roles: Roles are groups of permissions that can be assigned to users. For
+      example, an administrator role might have the create posts, edit posts,
+      and delete posts permissions.
+    </li>
+    <li>
+      Gateways: Gateways are used to check if a user has permission to perform a
+      certain action. For example, you could use a gateway to check if a user
+      has permission to create a new post before allowing them to access the
+      post creation form.
+    </li>
+  </ul>
+  <p>Let us discuss how to implement access control in Laravel.</p>
+  <p>
+    Laravel provides a powerful package called Laravel Breeze, which is a
+    minimal and elegant implementation of authentication and access control. To
+    implement access control in your Laravel application:
+  </p>
+
+  <ol>
+    <li>Install Laravel Breeze:</li>
+    <p>Start by installing Laravel Breeze using Composer:</p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            composer require laravel/breeze --dev
+         </code></pre>
+    </div>
+
+    <li>Generate Authentication Scaffolding:</li>
+    <p>Use the Artisan command to generate authentication scaffolding:</p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            php artisan breeze:install
+           </code></pre>
+    </div>
+    <li>Configure Roles and Permissions:</li>
+    <p>
+      You can use a package like Spatie Laravel Permissions to manage roles and
+      permissions. Install it via Composer:
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            composer require spatie/laravel-permission
+             </code></pre>
+    </div>
+  </ol>
+  <br />
+
+  <p>
+    To manage user permissions and roles in your Laravel application, you will
+    need to:
+  </p>
+
+  <ol>
+    <li>Create a permissions table in your database.</li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        class Permission extends Model
+        {
+            public $table = 'permissions';            
+        
+            protected $fillable = [
+                'name',
+                'guard_name',
+            ];
+        }       
+               </code></pre>
+    </div>
+    <p>
+      The permissions table will store the names of all of the permissions in
+      your application. The table should have the following columns:
+    </p>
+    <ul>
+      <li>id: The primary key of the table.</li>
+      <li>name: The name of the permission.</li>
+      <li>guard_name: The name of the guard that the permission belongs to</li>
+    </ul>
+    <li>Create a roles table in your database.</li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        class Role extends Model
+        {
+            public $table = 'roles';            
+        
+            protected $fillable = [
+                'name',
+                'guard_name',
+            ];            
+        
+            public function permissions()
+            {
+                return $this->belongsToMany(Permission::class);
+            }
+        }
+                 </code></pre>
+    </div>
+    <p>
+      The roles table will store the names of all of the roles in your
+      application. The table should have the following columns:
+    </p>
+    <ul>
+      <li>id: The primary key of the table.</li>
+      <li>name: The name of the role.</li>
+      <li>guard_name: The name of the guard that the role belongs to.</li>
+    </ul>
+
+    <li>Create a permission pivot table to link permissions and roles.</li>
+    <p>Create a migration file for you to edit.</p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            php artisan make:migration create_permission_role_pivot_table
+                   </code></pre>
+    </div>
+    <p>
+      The permission pivot table will link permissions and roles together. The
+      table should have the following columns:
+    </p>
+    <ul>
+      <li>permission_id: The ID of the permission.</li>
+      <li>role_id: The ID of the role.</li>
+    </ul>
+
+    <li>Create a permissions model and a roles’ model.</li>
+    <p>
+      Create two new PHP files, Permission.php and Role.php, and add the
+      following code to each file, respectively:
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            &lt;?php
+
+            namespace App\Models;            
+            
+            use Illuminate\Database\Eloquent\Model;            
+            
+            class Permission extends Model
+            {
+                public $table = 'permissions';            
+            
+                protected $fillable = [
+                    'name',
+                    'guard_name',
+                ];
+            }
+            
+            &lt;?php            
+            
+            namespace App\Models;            
+            
+            use Illuminate\Database\Eloquent\Model;            
+            
+            class Role extends Model
+            {
+                public $table = 'roles';            
+            
+                protected $fillable = [
+                    'name',
+                    'guard_name',
+                ];            
+            
+                public function permissions()
+                {
+                    return $this->belongsToMany(Permission::class);
+                }
+            }            
+                     </code></pre>
+    </div>
+    <li>Create a permissions migration and a roles migration.</li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            php artisan make:migration seed_permissions_table
+            php artisan make:migration seed_roles_table
+                     </code></pre>
+    </div>
+    <p>
+      This will create two migration files for you to edit. In the
+      seed_permissions_table migration file, add the following code:
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            public function up()
+            {
+                // Seed the permissions table with your desired permissions.
+                Permission::create([
+                    'name' => 'create posts',
+                    'guard_name' => 'web',
+                ]);            
+            
+                Permission::create([
+                    'name' => 'edit posts',
+                    'guard_name' => 'web',
+                ]);            
+            
+                Permission
+                //............
+            }
+            
+                       </code></pre>
+    </div>
+    <li>
+      Run the permissions migration and the roles migration to create the tables
+      in your database.
+    </li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            php artisan migrate
+                   </code></pre>
+    </div>
+
+    <li>
+      Seed the permissions and roles tables with your desired permissions and
+      roles. You can use the Laravel seeder to seed the permissions and roles
+      tables. For example, the following seeder will seed the permissions table
+      with three permissions and the roles table with two roles:
+    </li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            // database/seeds/PermissionsAndRolesSeeder.php
+
+            namespace Database\Seeders;            
+            
+            use Illuminate\Database\Seeder;            
+            
+            class PermissionsAndRolesSeeder extends Seeder
+            {
+                public function run()
+                {
+                    // Seed the permissions table.
+                    $permissions = [
+                        [
+                            'name' => 'create posts',
+                            'guard_name' => 'web',
+                        ],
+                        [
+                            'name' => 'edit posts',
+                            'guard_name' => 'web',
+                        ],
+                        [
+                            'name' => 'delete posts',
+                            'guard_name' => 'web',
+                        ],
+                 //...........
+
+                }
+            }         
+    </code></pre>
+    </div>
+
+    <li>Assign permissions to roles.</li>
+    <p>This is how you assign permission to roles:</p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $role = Role::find(1);
+            $role->givePermissionTo('create posts');
+                     </code></pre>
+    </div>
+
+    <li>Assign roles to users.</li>
+    <p>The following code is used to assign role to users:</p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $user = User::find(1);
+            $user->assignRole('administrator');
+                     </code></pre>
+    </div>
+    <li>Check user permissions using gateways.</li>
+    <p>This is how we shall be checking permissions:</p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            Gate::authorize('create posts');
+                     </code></pre>
+    </div>
+    <p>
+      If the user has permission to create posts, the
+      <strong>Gate::authorize()</strong> method will return true. Otherwise, the
+      <strong>Gate::authorize()</strong> method will return false.
+    </p>
+
+    <p>
+      You can also use the <strong>can()</strong> method on the User model to
+      check user permissions. The following code would check if the user has
+      permission to create a new post:
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $user = User::find(1);
+
+            if ($user->can('create posts')) {
+                // Allow the user to create a new post.
+            } else {
+                // Deny the user permission to create a new post.
+            }
+            
+                       </code></pre>
+    </div>
+  </ol>
+  <p>
+    To recap, access control is essential for managing user permissions and
+    ensuring the security and integrity of your Laravel application. With
+    Laravel Breeze and packages like Spatie Laravel Permissions, you can easily
+    implement role-based access control and protect your application's
+    resources.
+  </p>
+  <br /><br />
+
+  <h1>File uploading and finishing up</h1>
+  <p>
+    File uploading is a common requirement for web applications, and Laravel
+    provides built-in features to handle file uploads seamlessly. In this
+    section, we'll explore how to allow users to upload files and images in your
+    Laravel application.
+  </p>
+  <br />
+  <p>Uploading Files with Laravel</p>
+  <p>
+    Laravel makes it easy to handle file uploads with the help of the
+    <strong>Illuminate\Http\Request</strong> object and the
+    <strong>file()</strong> method. Here's how you can set up file uploads in
+    your Laravel application:
+  </p>
+  <p>To set up file uploads in your Laravel application, you will need to:</p>
+  <ul>
+    <li>Create a route to handle the file upload request.</li>
+    <li>Create a controller to handle the file upload request.</li>
+    <li>Validate the file upload request.</li>
+    <li>Save the uploaded file to storage.</li>
+    <li>Return a success response to the user.</li>
+  </ul>
+
+  <p>
+    Step 1: Create a route to handle the file upload request<br />
+    The following route will handle file upload requests:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+            // routes/web.php
+
+            Route::post('/upload-file', [FileUploadController::class, 'store']);
+              
+                         </code></pre>
+  </div>
+
+  <p>
+    Step 2: Create a controller to handle the file upload request <br />The
+    following controller will handle the file upload request:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        // app/Http/Controllers/FileUploadController.php
+
+        namespace App\Http\Controllers;        
+        
+        use Illuminate\Http\Request;
+        use Illuminate\Support\Facades\Storage;        
+        
+        class FileUploadController extends Controller
+        {
+            public function store(Request $request)
+            {
+                // Get the uploaded file.
+                $file = $request->file('file');        
+        
+                // Validate the uploaded file.
+                $file->validate([
+                    'required',
+                    'file',
+                    'max:2048', // 2MB maximum file size
+                ]);        
+        
+                // Save the uploaded file to storage.
+                $filename = Storage::disk('public')->putFile('uploads', $file);        
+        
+                // Return a success response to the user.
+                return response()->json([
+                    'message' => 'File uploaded successfully.',
+                    'filename' => $filename,
+                ]);
+            }
+        }
+        
+              
+                         </code></pre>
+  </div>
+  <p>
+    The <strong>$request->file('file')</strong> method returns the uploaded
+    file. The $file->validate() method validates the uploaded file. The
+    <strong>Storage::disk('public')->putFile()</strong> method saves the
+    uploaded file to the uploads directory on the public disk.
+  </p>
+
+  <p>
+    Step 3: Validate the file upload request <br />The following code validates
+    the file upload request:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    $file->validate([
+        'required',
+        'file',
+        'max:2048', // 2GB maximum file size
+    ]);
+    
+                         </code></pre>
+  </div>
+
+  <p>
+    Step 4: Save the uploaded file to storage<br />
+
+    The following code saves the uploaded file to storage:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $filename = Storage::disk('public')->putFile('uploads', $file);
+                         </code></pre>
+  </div>
+  <p>
+    This code will save the uploaded file to the uploads directory on the public
+    disk.
+  </p>
+
+  <p>
+    Step 5: Return a success response to the user<br />
+
+    The following code returns a success response to the user:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    return response()->json([
+        'message' => 'File uploaded successfully.',
+        'filename' => $filename,
+    ]);    
+                         </code></pre>
+  </div>
+  <p>
+    This code will return a JSON response to the user with a message indicating
+    that the file was uploaded successfully and the filename of the uploaded
+    file.
+  </p>
+
+  <p>
+    Example<br />
+    The following example shows how to upload a file using a simple HTML form:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;form action="/upload-file" method="post" enctype="multipart/form-data">
+            &lt;input type="file" name="file">
+            &lt;button type="submit">Upload File&lt;/button>
+        &lt;/form>   
+                         </code></pre>
+  </div>
+  <p>
+    When the user submits the form, the file will be uploaded to the server and
+    saved to storage. You can then access the uploaded file in the following
+    format URL:
+    <strong><em>http://domain.com/storage/uploads/filename</em></strong>
+  </p>
+
+  <p>
+    When handling file uploads, it is essential to include validation and
+    security measures to protect your application from malicious attacks.
+    Laravel provides a number of built-in validation rules and methods to help
+    you validate and secure uploaded files.
+  </p>
+
+  <ol>
+    <li>Validation</li>
+    <p>
+      Laravel provides a number of built-in validation rules for uploaded files,
+      including:
+    </p>
+    <ul>
+      <li><strong>required:</strong> The file is required.</li>
+      <li><strong>file:</strong> The file is a valid file.</li>
+      <li><strong>mimes:</strong> The file is of a specific MIME type.</li>
+      <li>
+        <strong>max:</strong> The file size is less than or equal to a specified
+        maximum size.
+      </li>
+      <li>
+        <strong>min:</strong> The file size is greater than or equal to a
+        specified minimum size.
+      </li>
+    </ul>
+    <p>
+      You can use these validation rules in your Laravel controllers to validate
+      uploaded files before saving them to storage.
+    </p>
+
+    <li>Security</li>
+    <p>
+      Laravel provides a number of built-in security measures for uploaded
+      files, including:
+    </p>
+    <ul>
+      <li>
+        File scanning: Laravel can scan uploaded files for viruses and malware
+        using the ClamAV antivirus scanner.
+      </li>
+      <li>
+        File hashing: Laravel can generate a hash for each uploaded file and
+        store it in the database. This can be used to verify the integrity of
+        uploaded files and detect any changes that may have been made to them
+        after they were uploaded.
+      </li>
+      <li>
+        File storage: Laravel can store uploaded files in a variety of
+        locations, including on the local filesystem, in the cloud, or on a
+        remote server. This helps to protect uploaded files from unauthorized
+        access.
+      </li>
+    </ul>
+    <p>
+      The following example shows how to validate and secure an uploaded file
+      using Laravel:
+    </p>
+  </ol>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        // app/Http/Controllers/FileUploadController.php
+
+        namespace App\Http\Controllers;        
+        
+        use Illuminate\Http\Request;
+        use Illuminate\Support\Facades\Storage;        
+        
+        class FileUploadController extends Controller
+        {
+            public function store(Request $request)
+            {
+                // Validate the uploaded file.
+                $request->validate([
+                    'file' => 'required|file|mimes:pdf,docx|max:1024',
+                ]);
+        
+        
+                // Scan the uploaded file for viruses and malware.
+                if (!ClamAV::scan($request->file('file'))) {
+                    // The file is infected with a virus or malware.
+                }
+        
+        
+                // Generate a hash for the uploaded file.
+                $hash = Hash::make($request->file('file'));        
+        
+                // Save the uploaded file to storage.
+                $filename = Storage::disk('public')->putFile('uploads', $request->file('file'));        
+        
+                // Store the file hash in the database.
+                $file = new File([
+                    'name' => $filename,
+                    'hash' => $hash,
+                ]);
+                $file->save();        
+        
+                // Return a success response to the user.
+                return response()->json([
+                    'message' => 'File uploaded successfully.',
+                    'filename' => $filename,
+                ]);
+            }
+        }
+          
+                         </code></pre>
+  </div>
+  <p>
+    This code validates that the uploaded file is required, is a valid file, is
+    a PDF or DOCX file, and is no larger than 1MB. It also scans the uploaded
+    file for viruses and malware, generates a hash for the uploaded file, and
+    stores the uploaded file to storage and the file hash in the database.
+  </p>
+
+  <p>
+    To recap, Laravel simplifies the process of handling file uploads in your
+    web application. By creating a file upload form, processing the uploaded
+    file in your controller, and implementing validation and security measures,
+    you can allow users to upload files and images securely.
+  </p>
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

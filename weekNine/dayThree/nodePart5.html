@@ -1,0 +1,538 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h2>Middleware</h2>
+  <p>
+    We have explored and seen this term before in the tutorial, however, in this
+    part, we will delve deeper into Express.js middleware. Middleware is a
+    powerful feature that allows you to perform various tasks during the
+    request/response cycle. We will create more advanced middleware functions
+    and explore their roles in building web applications.
+  </p>
+  <p>
+    We will create advanced middleware functions to demonstrate their
+    capabilities.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        // Middleware for logging requests
+        app.use((req, res, next) => {
+        console.log(`Received a ${req.method} request for ${req.url}`);
+        next(); // Continue to the next middleware or route handler
+        });        
+        
+        // Custom middleware to check for user authentication
+        const checkAuth = (req, res, next) => {
+        if (req.query.auth === 'true') {
+        next(); // Proceed to the next middleware or route handler
+        } else {
+        res.status(401).send('Unauthorized'); // Respond with a 401 status for unauthenticated requests
+        }
+        };
+        // Apply the 'checkAuth' middleware to specific routes
+        app.get('/secured', checkAuth, (req, res) => {
+        res.send('This is a secured route.');
+        });
+        
+     </code></pre>
+  </div>
+  <p>
+    Middleware functions are executed in the order they are defined. This can be
+    crucial in controlling the flow of your application.For example, you could
+    use middleware to authenticate users before they are allowed to access
+    certain parts of your application. You could also use middleware to log
+    requests and responses, or to cache frequently accessed data.
+  </p>
+  <p>
+    By carefully considering the order in which you define your middleware
+    functions, you can create a powerful and flexible way to control the flow of
+    your application.
+  </p>
+  <p>
+    Now run your server by executing nodemon index.js. Do not forget to test
+    your server. To do this, open your web browser and access the following URLs
+    to see how the new routes and middleware are handled:
+  </p>
+  <ul>
+    <li>http://localhost:3000/blog/1 (replace '1' with the actual post ID)</li>
+    <li>http://localhost:3000/about</li>
+    http://localhost:3000/secured (with auth=true as a query parameter to
+    authenticate)
+  </ul>
+  <p>
+    As you continue to explore the depths of middleware, you gain a better
+    understanding of how to control the request/response cycle and manage
+    various aspects of your web application. This is the outcome for the last
+    url. Ensure all urls work properly.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node33.png'%}" alt="" />
+  <p>
+    Don’t worry about authentication right now, we will be handling
+    authentication later on.
+  </p>
+  <p>
+    Next we will explore advanced middleware concepts and understand their
+    importance in real-world web applications. We will dive into error handling
+    middleware and discuss how middleware can be used in practical scenarios.
+  </p>
+  <p>
+    Error handling middleware is crucial for managing errors in your
+    application. You can also use middleware to handle other types of errors,
+    such as 500 (Internal Server Error) errors. By using middleware to handle
+    errors, you can ensure that your application provides a consistent and
+    informative experience to your users, even when something goes wrong. Let's
+    create an error handling middleware to handle 404 (Not Found) errors.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+
+      // ... previous code ...
+      // Error handling middleware for 404 Not Found
+      app.use((req, res, next) => {
+      res.status(404).send("404 Not Found");
+      });      
+        
+     </code></pre>
+  </div>
+  <p>
+    One common practical scenario for middleware is user authentication. Here's
+    an example of how middleware can be used for user authentication:
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      // ... previous code ...
+      // Simulate user authentication middleware
+      const authenticateUser = (req, res, next) => {
+      if (req.query.auth === 'true') {
+      // The user is authenticated, allow access to the protected route
+      next();
+      } else {
+      // The user is not authenticated, send an error response
+      res.status(401).send('Unauthorized');
+      }
+      };
+      // Apply the 'authenticateUser' middleware to a protected route
+      app.get('/dashboard', authenticateUser, (req, res) => {
+      res.send('Welcome to the dashboard!');
+      });
+      
+     </code></pre>
+  </div>
+  <p>
+    Now run the server by executing node index.js. Open your web browser and
+    access the following URLs to see how the error handling middleware and
+    authentication middleware are applied:
+  </p>
+
+  <ul>
+    <li>
+      http://localhost:3000/nonexistent (should trigger the 404 error handler)
+    </li>
+  </ul>
+  <img class="img-fluid" src="{% static 'Images/node/node34.png'%}" alt="" />
+  <p>
+    Error handling middleware is essential for gracefully handling errors in
+    your application, and authentication middleware is crucial for protecting
+    restricted routes. Error handling middleware allows you to gracefully handle
+    errors and provide a consistent and informative experience to your users,
+    even when something goes wrong. For example, you can use error handling
+    middleware to log errors, send informative error messages to your users, and
+    redirect users to a friendly error page.
+  </p>
+  <p>
+    Authentication middleware allows you to protect restricted routes from
+    unauthorized access. For example, you can use authentication middleware to
+    require users to be logged in before they can access certain pages or
+    resources.
+  </p>
+  <p>
+    By using error handling middleware and authentication middleware, you can
+    create a more robust and secure application.
+  </p>
+  <p>
+    Next we will explore real world scenarios where middleware plays a crucial
+    role in running web applications. We shall be looking at request logging,
+    request parsing among others.
+  </p>
+  <br /><br />
+  <p><strong>Request Logging Middleware</strong></p>
+  <p>
+    Let us start with request logging. Request logging middleware is commonly
+    used to log details of incoming requests, which can be valuable for
+    monitoring and debugging. Here's how you can create a simple request logging
+    middleware. We add this middleware at the top of the page before starting to
+    add routes then navigate to the about page on the browser. Move back to your
+    vsCode and look at the results on the terminal.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      // ... previous code ...
+
+      // Request logging middleware
+      app.use((req, res, next) => {
+      console.log(`${new Date().toISOString()} - ${req.method} request for ${req.url}`);
+      next();
+      });      
+      
+     </code></pre>
+  </div>
+  <p>
+    This is where this code should be and you should be able to see the results
+    on the node console as shown on the image below.
+  </p>
+  <img
+    class="img-fluid"
+    src="{% static 'Images/node/node35.png'%}"
+    alt=""
+  /><br />
+  <p><strong>Request Parsing Middleware</strong></p>
+  <p>
+    Next we shall look at request parsing middleware. Request parsing middleware
+    is used to process data from requests. For example, you can create a
+    middleware to parse JSON data from the request body.This is an example of
+    the format . though we are not adding it in our code.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+
+      // JSON parsing middleware
+      app.use(express.json()); // Automatically parses JSON data in the request body
+     </code></pre>
+  </div>
+  <br />
+  <p><strong>File Upload Middleware</strong></p>
+  <p>
+    Middleware is commonly used for file upload handling. This is because
+    middleware can be used to perform common tasks before and after file
+    uploads, such as:
+  </p>
+  <ul>
+    <li>
+      Authenticating users: Middleware can be used to authenticate users before
+      they are allowed to upload files. This can help to prevent unauthorized
+      users from uploading files to your application.
+    </li>
+    <li>
+      Validating file uploads: Middleware can be used to validate file uploads
+      to ensure that they are valid and meet certain criteria, such as file size
+      limits and allowed file types.
+    </li>
+    <li>
+      Sanitizing file uploads: Middleware can be used to sanitize file uploads
+      to remove any malicious code or content.
+    </li>
+    <li>
+      Saving file uploads: Middleware can be used to save file uploads to a
+      storage location, such as a database or a file system.
+    </li>
+  </ul>
+  <p>
+    There are a number of popular middleware packages that can be used for file
+    upload handling in Node.js, such as Multer and Express-FileUpload. These
+    packages provide a simple and easy-to-use way to handle file uploads in your
+    application. Here's an example of middleware for file uploads using the
+    multer package. Do not add this to our code.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      const multer = require('multer');
+      const storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+      cb(null, 'uploads/');
+      },
+      filename: (req, file, cb) => {
+      cb(null, file.originalname);
+      },
+      });      
+      
+      const upload = multer({ storage });      
+      
+      // File upload middleware
+      app.post('/upload', upload.single('file'), (req, res) => {
+      res.send('File uploaded successfully.');
+      });
+      
+     </code></pre>
+  </div>
+  <p>
+    Middleware is a versatile and powerful tool in web development, making it
+    possible to handle various aspects of request processing and data
+    manipulation.
+  </p>
+  <br /><br />
+
+  <h2>Routing</h2>
+  <p>
+    In this chapter, we'll explore routing in Express.js. Routing is a
+    fundamental concept in web development that allows you to handle different
+    HTTP methods and URL paths effectively. <br />To define a route in
+    Express.js, you use one of the following methods:
+  </p>
+  <ul>
+    <li>app.get(): Handles GET requests.</li>
+    <li>app.post(): Handles POST requests.</li>
+    <li>app.put(): Handles PUT requests.</li>
+    <li>app.delete(): Handles DELETE requests.</li>
+    <li>app.all(): Handles all HTTP requests.</li>
+  </ul>
+  <p>
+    Each method takes two arguments: the path of the route and a callback
+    function. The callback function is executed when a request is made to the
+    specified path. We had already looked at routing before when we accessed the
+    home, about and blog page but let us look at some more examples. Do not add
+    this code in our index.js file. Here's how to create routes for different
+    HTTP methods:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+
+      // Define a GET route
+      app.get('/', (req, res) => {
+      res.send('This is the homepage.');
+      });      
+      
+      // Define a POST route
+      app.post('/create', (req, res) => {
+      // Handle POST data and create a resource
+      res.send('Resource created.');
+      });      
+      
+      // Define a PUT route
+      app.put('/update/:id', (req, res) => {
+      // Update a resource by ID
+      res.send(`Resource with ID ${req.params.id} updated.`);
+      });      
+      
+      // Define a DELETE route
+      app.delete('/delete/:id', (req, res) => {
+      // Delete a resource by ID
+      res.send(`Resource with ID ${req.params.id} deleted.`);
+      });      
+      
+     </code></pre>
+  </div>
+  <p>
+    Express allows you to define route parameters by using a colon followed by
+    the parameter name in the route definition. You can access these parameters
+    using req.params. Route parameters are a powerful feature of Express.js that
+    allows you to create complex and dynamic web applications.
+  </p>
+  <p>
+    Routing is a core concept in building web applications with Express.js, and
+    it allows you to create organized and structured APIs. By using routing, you
+    can define different routes for your application, and each route can handle
+    a different HTTP method (GET, POST, PUT, DELETE, etc.) and URL path.
+    Overall, routing is an essential feature for building web applications with
+    Express.js. By using routing, you can create organized, structured, and
+    secure APIs.
+  </p>
+  <p>
+    Next we shall delve deeper into routing in Express.js by exploring advanced
+    concepts. We'll discuss route nesting, route modularity, and how to
+    structure your application using routers.
+  </p>
+  <br />
+  <p><strong> Assignment </strong></p>
+  <p>
+    Read and try out the advanced concepts of routing. That includes, route
+    nesting , route modularity and using modular routers.
+  </p>
+  <p>
+    <strong>Note:</strong> By exploring advanced routing concepts, you're
+    enhancing the organization and scalability of your Express.js applications
+  </p>
+  <br /><br />
+
+  <h2>MVC REST API</h2>
+  <p>
+    In this part, we will learn how to build a RESTful API using Express.js. A
+    RESTful API is a common way to interact with web services, allowing clients
+    to perform CRUD (Create, Read, Update, Delete) operations on resources.
+  </p>
+  <p>RESTful APIs are based on the following principles:</p>
+  <ul>
+    <li>
+      Resources: RESTful APIs model resources, such as users, products, or
+      orders.
+    </li>
+    <li>
+      HTTP methods: RESTful APIs use the HTTP methods GET, POST, PUT, and DELETE
+      to perform CRUD operations on resources.
+    </li>
+    <li>URIs: RESTful APIs use URIs to identify resources.</li>
+    <li>
+      Statelessness: RESTful APIs are stateless, meaning that each request is
+      independent of any other request.
+    </li>
+  </ul>
+  <p>
+    To create a RESTful API, we'll first define the structure of your API.
+    Decide on the resources you want to expose through your API. For example,
+    you might create an API for managing books. Let us create another project
+    and name it node06. Create an index.js file then open the application with
+    visual studio code.
+  </p>
+  <p>Create an index.html file and add the code below</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-html">
+
+&lt;!-- index.html --&gt;
+&lt;!DOCTYPE html>
+&lt;html>
+  &lt;head>
+    &lt;title>My Web Server&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;h1> Home Page&lt;/h1>
+    &lt;/body>
+&lt;/html>     
+      
+     </code></pre>
+  </div>
+  <p>Install nodemon and express using the commands below on the terminal.</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+
+      $ npm i nodemon
+      $ npm i express    
+      
+     </code></pre>
+  </div>
+  <p>Here's a basic API structure:</p>
+  <p>Add the code below in the index.js file</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+
+      // In index.js
+      const express = require('express');
+      const app = express();
+      const port = 3000;      
+      
+      const books = [
+      { id: 1, title: 'Book 1 - Programming' },
+      { id: 2, title: 'Book 2 - Node.js' },
+      ];      
+      
+      // Define routes
+      app.get("/", (req, res) => {
+      // Serve the HTML page
+      res.sendFile(__dirname + "/index.html");
+      });      
+      
+      // Define routes for the RESTful API
+      app.get('/api/books', (req, res) => {
+      res.json(books);
+      });      
+      
+      app.get('/api/books/:id', (req, res) => {
+      const bookId = parseInt(req.params.id);
+      const book = books.find(book => book.id === bookId);
+      if (!book) return res.status(404).send('Book not found');
+      res.json(book);
+      });      
+      
+      // Add routes for POST, PUT, and DELETE operations
+      // ...
+      
+      
+      app.listen(port, () => {
+      console.log('Server is running on port ' + port);
+      });
+      
+     </code></pre>
+  </div>
+  <p>
+    On the terminal run the node server using nodemon index.Now that the server
+    is up and running, let us test the server. Open your web browser and accesss
+    <strong><em> http://localhost:3000.</em> </strong>
+  </p>
+  <p>
+    Navigate to url
+    <strong><em>http://localhost:3000/api/books </em></strong> and you should be
+    able to see the results on the browser.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node36.png'%}" alt="" />
+  <p>CRUD Operations:</p>
+  <p>
+    To create a complete RESTful API, you need to add routes for all CRUD
+    operations:
+  </p>
+  <ul>
+    <li>POST</li>
+    <p>
+      The POST method is used to create a new resource. The request body
+      contains the data for the new resource. The response body contains the
+      newly created resource. For example, to create a new user, you would send
+      a POST request to the /users endpoint with the user's data in the request
+      body. The response body would contain the newly created user object.
+    </p>
+    <li>PUT</li>
+    <p>
+      The PUT method is used to update an existing resource. The request body
+      contains the updated data for the resource. The response body contains the
+      updated resource. For example, to update a user's profile, you would send
+      a PUT request to the /users/:id endpoint with the updated user data in the
+      request body. The response body would contain the updated user object.
+    </p>
+    <li>DELETE</li>
+    <p>
+      The DELETE method is used to delete a resource. The response body is
+      empty. For example, to delete a user, you would send a DELETE request to
+      the /users/:id endpoint. The response body would be empty, but you could
+      use the HTTP status code to indicate whether the deletion was successful.
+    </p>
+  </ul>
+  <p>
+    Using the appropriate HTTP methods and status codes in a RESTful API is
+    important for adhering to REST principles. The following is a summary of the
+    most common HTTP methods and status codes used in RESTful APIs:
+  </p>
+  <p>HTTP methods:</p>
+  <ol>
+    <li>GET: Used to retrieve a resource.</li>
+    <li>POST: Used to create a new resource.</li>
+    <li>PUT: Used to update an existing resource.</li>
+    <li>DELETE: Used to delete a resource.</li>
+  </ol>
+  <br />
+  <p>Status codes:</p>
+  <ol>
+    <li>
+      200 OK: The request was successful and the response body contains the
+      requested data.
+    </li>
+    <li>
+      201 Created: The request was successful and a new resource was created.
+    </li>
+    <li>400 Bad Request: The request was invalid.</li>
+    <li>404 Not Found: The requested resource does not exist.</li>
+    <li>
+      500 Internal Server Error: An unexpected error occurred on the server.
+    </li>
+  </ol>
+  <p>
+    Creating a RESTful API is a fundamental step in building web services. It
+    allows you to create APIs that are easy to use, scalable, and flexible.
+  </p>
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

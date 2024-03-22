@@ -1,0 +1,295 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h2>Event Emitter</h2>
+
+  <p>
+    An Event Emitter is a powerful tool that enables you to work with events and
+    create event-driven applications. Events are like signals in your program,
+    indicating that something specific has happened. The Event Emitter allows
+    you to manage these events effectively.
+  </p>
+  <p>
+    Let us create another folder inside the node folder and name the folder
+    node04_eventemitter. Inside this folder create a file named app.js then open
+    the folder with visual studio code.
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node22.png'%}" alt="" />
+  <p>
+    To work with event emitters first, we have to import the event emitter
+    module. The event emitter is available as a built-in module called events.
+    In the
+    <a
+      href="https://nodejs.org/dist/latest-v18.x/docs/api/events.html"
+      target="_blank"
+      >node.js </a
+    >official documentation , search for events then read more about events.
+  </p>
+  <p>In the <strong>app.js</strong> file let us add the code below.</p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        const EventEmitter = require('events');
+     </code></pre>
+  </div>
+  <p>
+    By importing this module, it allows us to create, manage, and respond to
+    events.
+  </p>
+  <p>Next, we create an instance of the event emitter.</p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        const myEmitter = new EventEmitter();
+     </code></pre>
+  </div>
+  <p>
+    The instance will be our tool for handling events.Imagine this instance as a
+    unique communicator within your program, responsible for delivering and
+    responding to events.
+  </p>
+
+  <p>
+    To respond to events, you need to listen for them. In our online store
+    example, we'll listen for the 'productPurchased' event.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        myEmitter.on('productPurchased', (product, price) => {
+            console.log(`Product "${product}" purchased for $${price}`);
+            });
+            
+     </code></pre>
+  </div>
+  <p>
+    When a customer buys a product, this listener will log a message with the
+    product name and price.<br />
+    To initiate an event, we use the emit method. This method sends out a signal
+    that a specific event has occurred. Let's consider an example of an online
+    store.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        myEmitter.emit('productPurchased', 'Laptop', 1000);
+     </code></pre>
+  </div>
+  <p>
+    Here, we emit an event called 'productPurchased' and provide data about the
+    product (a laptop) and its price (1000).<br />
+
+    Events often carry data with them. Consider an example where we're
+    simulating a chat application.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        myEmitter.on('messageReceived', (username, message) => {
+            console.log(`New message from ${username}: ${message}`);
+            });
+            
+     </code></pre>
+  </div>
+
+  <p>
+    In this case, we're listening for the 'messageReceived' event and expecting
+    data about the sender's username and the message content.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        myEmitter.emit('messageReceived', 'User123', 'Hello, how are you?');
+     </code></pre>
+  </div>
+  <p>
+    When a user sends a message, this listener will display the sender's
+    username and the message. Install nodemon then run the application on the
+    node server using ;
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ nodemon app.js 
+     </code></pre>
+  </div>
+  <p>you should be able to see the results on the terminal</p>
+  <img class="img-fluid" src="{% static 'Images/node/node23.png'%}" alt="" />
+  <p>
+    Sometimes, you may need to stop listening for events. To do this, use the
+    removeListener method.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        function myListener() {
+            console.log('Event occurred');
+            }            
+            
+            myEmitter.on('myEvent', myListener);            
+            
+            // Later, you can remove the listener
+            myEmitter.removeListener('myEvent', myListener); 
+     </code></pre>
+  </div>
+  <p>
+    This can be helpful when you no longer want a specific function to respond
+    to a particular event.
+  </p>
+
+  <h2>Build a web server</h2>
+  <p>
+    In this chapter, we'll start from scratch to create a basic web server using
+    Node.js. We'll introduce essential concepts and gradually build upon them to
+    make the learning experience fun and in-depth.
+  </p>
+  <p>
+    Let us create a project called node05 . inside this folder create an
+    index.js file then open the project with visual studio code.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node24.png'%}" alt="" />
+  <p>
+    Since we will not be using any external dependencies for this part of the
+    tutorial, we shall proceed to build the server with built-in Node.js
+    modules.
+  </p>
+  <p>
+    In your index.js file, let's start by creating a basic web server that
+    listens on a specific port (e.g., 3000)
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        const http = require('http');
+
+        const server = http.createServer((req, res) => {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('Hello, World!\n');
+        });        
+        
+        server.listen(3000, () => {
+        console.log('Server is running on port 3000');
+        });
+         
+     </code></pre>
+  </div>
+  <p>
+    In this code, we import the http module, create an HTTP server, and listen
+    on port 3000. When a request is made, it responds with 'Hello, World!'.
+  </p>
+  <p>
+    Now that the server is up and running, let us test the server. Open your web
+    browser and access <em><strong> http://localhost:3000 </strong></em>. You
+    should see 'Hello, World!' displayed as shown in the image below.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node25.png'%}" alt="" />
+  <p>
+    Next, we shall enhance our basic web server by serving HTML pages. This is a
+    crucial step in creating dynamic and interactive web applications.
+  </p>
+  <p>
+    We will not use any external dependencies just as before. Let's start by
+    creating a HTML page for this application called
+    <strong>index.html</strong> .
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-html">
+        &lt;!DOCTYPE html>
+        &lt;html>
+            &lt;head>
+                 &lt;title>My Web Server&lt;/title>
+            &lt;/head>
+            &lt;body>
+                &lt;h1>Welcome to My Web Server&lt;/h1>
+            &lt;/body>
+        &lt;/html>
+     </code></pre>
+  </div>
+  <p>
+    Now we have to modify our server code to read and serve this HTML page when
+    a user accesses the root route ('/').
+  </p>
+  <p>Let us modify the code in our <strong>index.js</strong> file</p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        // In index.js
+        const http = require('http');
+        const fs = require('fs');
+        
+        
+        const server = http.createServer((req, res) => {
+        if (req.url === '/') {
+        fs.readFile('index.html', 'utf8', (err, data) => {
+        if (err) {
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal Server Error\n');
+        } else {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(data);
+        }
+        });
+        }
+        });
+        
+        
+        server.listen(3000, () => {
+        console.log('Server is running on port 3000');
+        });
+        
+     </code></pre>
+  </div>
+
+  <p>
+    We have now imported the fs module which is used for reading and writing
+    files. The server variable is then assigned to a new HTTP server created
+    using the http.createServer() function. The http.createServer() function
+    takes a callback function as an argument, which is called whenever a new
+    HTTP request is received.
+  </p>
+  <p>
+    The callback function <strong> (if (req.url === '/') ) </strong> starts by
+    checking if the requested URL is equal to '/'. If it is, then the code knows
+    that the user is requesting the home page.
+  </p>
+
+  <p>
+    The code then uses the <strong>fs.readFile()</strong> function to read the
+    index.html file. The fs.readFile() function takes three arguments: the path
+    to the file to read, the encoding of the file, and a callback function.
+  </p>
+  <p>
+    The callback function is called when the file has been read, or if an error
+    occurred while reading the file. If an error occurred, then the code will
+    send a 500 Internal Server Error response to the user.<br />
+    Finally, the code starts the HTTP server by calling the server.listen()
+    function. The server.listen() function takes the port number that the server
+    should listen on as an argument. In this case, the server will listen on
+    port 3000.
+  </p>
+  <p>
+    Since we are running the code using nodemon, it will automatically restart
+    the server. And when you refresh your browser, you should be able to see the
+    text that we have in our index.html file
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node26.png'%}" alt="" />
+
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

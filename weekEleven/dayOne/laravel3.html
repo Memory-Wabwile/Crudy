@@ -1,0 +1,455 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h2>Models and database migrations</h2>
+
+  <p>
+    In this part of the tutorial, we will explore the use of models and database
+    migrations in Laravel. Models in Laravel are PHP classes that represent
+    database tables. Models provide a convenient way to interact with your
+    database, and they can be used to perform tasks such as:
+  </p>
+  <ul>
+    <li>Creating, reading, updating, and deleting data</li>
+    <li>Validating data</li>
+    <li>Performing relationships between different table</li>
+  </ul>
+  <p>
+    Migrations in Laravel are PHP scripts that are used to manage your database
+    schema and data changes. Migrations allow you to make changes to your
+    database schema in a controlled manner, and they also make it easy to deploy
+    your database changes to other environments.
+  </p>
+  <p>
+    Models and migrations are two of the most important features of Laravel's
+    database system. By using models and migrations, you can develop and
+    maintain complex database applications with ease.
+  </p>
+  <p>
+    So let us now have an indepth look at each. Models in Laravel are
+    representations of database tables. They enable you to interact with your
+    database by creating, reading, updating, and deleting records. Models are
+    typically associated with a database table and follow the Active Record
+    pattern, making database operations intuitive and straightforward.
+  </p>
+
+  <h3>Creating a Model</h3>
+  <p>
+    You can create a model using Laravel's Artisan command-line tool. For
+    instance, to create a User model, you can run:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        php artisan make:model User
+     </code></pre>
+  </div>
+
+  <p>
+    This command generates a User.php file in the app directory, representing
+    your model. The php artisan make:model User command creates a new Laravel
+    model class called User. This model class will represent the users table in
+    your database. To create the model, the command will generate a new PHP file
+    at app/Models/User.php. This file will contain the following code:
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;?php
+
+        namespace App\Models;        
+        
+        use Illuminate\Database\Eloquent\Model;        
+        
+        class User extends Model
+        {
+            //
+        }
+        
+     </code></pre>
+  </div>
+  <p>
+    This is a basic model class, but it can be extended to add additional
+    functionality, such as validation rules, relationships to other tables, and
+    methods for interacting with the database. You can define attributes and
+    relationships, as well as specify the associated database table inside the
+    model file:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        php artisan make:model User
+     </code></pre>
+  </div>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        class User extends Model
+        {
+            protected $table = 'users';        
+        
+            protected $fillable = [
+                'name',
+                'email',
+                'password',
+            ];
+        }        
+     </code></pre>
+  </div>
+  <p>
+    In this example, we have associated the User model with the users database
+    table and defined which attributes can be mass-assigned.
+  </p>
+  <p>It defines the following:</p>
+
+  <ul>
+    <li>
+      The table property specifies the name of the database table that the model
+      represents.
+    </li>
+    <li>
+      The fillable property specifies the list of attributes that can be mass
+      assigned to the model.
+    </li>
+  </ul>
+  <p>
+    Moving on to migrations.<br />
+    Migrations are a way to version-control your database schema and apply
+    changes in a systematic manner. They provide a convenient and consistent way
+    to create and modify database tables. To create a migration for a new table,
+    you can use the Artisan command:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+            php artisan make:migration create_posts_table
+         </code></pre>
+  </div>
+  <p>
+    This will generate a new migration file in the database/migrations
+    directory. The php artisan make:migration create_posts_table command will
+    create a new Laravel migration file called create_posts_table.php. This
+    migration file will contain the necessary SQL to create the posts table in
+    your database.
+  </p>
+  <p>
+    Inside the migration file, you can define the schema for the table using the
+    schema builder:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        public function up()
+        {
+            Schema::create('posts', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->text('content');
+                $table->timestamps();
+            });
+        }
+        
+         </code></pre>
+  </div>
+  <p>
+    In this example, we've created a posts table with columns for id, title,
+    content, and timestamps for record creation and modification. By default
+    this file will be created with different fields. You can edit to include
+    other fields that you need. In this case we are adding the title and
+    content.
+  </p>
+
+  <p>
+    The <strong>up()</strong> method of a Laravel migration file is used to
+    create or modify a database table. The method takes a Blueprint object as
+    its argument, which is used to define the structure of the table.
+  </p>
+  <p>
+    The Blueprint object provides a number of methods for defining table
+    columns, such as <strong> id(), string(), text(),</strong> and
+    <strong> timestamps()</strong>. The <strong>id()</strong> method creates an
+    auto-incrementing primary key column. The <strong>string()</strong> method
+    creates a string column. The <strong> text()</strong> method creates a text
+    column. The <strong> timestamps()</strong> method creates two columns,
+    <strong>created_at</strong> and <strong> updated_at</strong>, which are
+    automatically populated with the current date and time whenever a record is
+    created or updated.
+  </p>
+  <p>
+    To run the php artisan migrate command, open a terminal window and navigate
+    to the root directory of your Laravel application. Then, run the following
+    command:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ php artisan migrate
+         </code></pre>
+  </div>
+  <p>This will create the posts table in your database.</p>
+  <p>
+    You will notice that you might be getting an error because the PHP extension
+    required for database connectivity is not enabled or configured properly. To
+    resolve this issue, run the command below in your terminal to open the
+    <strong> php.ini</strong>
+    file in visual studio code.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ sudo cp /etc/php/8.1/cli/php.ini ~/php.ini
+        $ code ~/php.ini
+        
+         </code></pre>
+  </div>
+  <p>
+    Remove the semicolon before the line below to uncomment it. Save the changes
+    and restart your server.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        extension=pdo_mysql
+        
+         </code></pre>
+  </div>
+
+  <p>
+    MySQL server configuration. Run the command below to open my.cnf file with
+    visual studio code.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ sudo cp /etc/mysql/my.cnf ~/my.cnf
+        $ code ~/my.cnf        
+        
+         </code></pre>
+  </div>
+  <p>Add the line of code below in the file in case it is not available.</p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        socket = /var/run/mysqld/mysqld.sock        
+         </code></pre>
+  </div>
+  <p>Restart the server. On apache use the command below</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ sudo systemctl restart apache2
+        
+         </code></pre>
+  </div>
+
+  <p>Now connect to mysql database using the command below</p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $  mysql -u root -p
+         </code></pre>
+  </div>
+  <p>
+    This command will read all of the migration files in the database/migrations
+    directory and execute them in chronological order. If a migration has
+    already been executed, it will be skipped. The php artisan migrate command
+    runs all pending migrations in your Laravel application. This command is
+    typically used after you have created a new migration file.
+  </p>
+
+  <p>
+    To recap, we have explored the use of models and database migrations in
+    Laravel. Models allow you to interact with your database tables in an
+    intuitive way, while migrations enable you to manage your database schema in
+    a version-controlled manner. These tools are essential for building and
+    maintaining a robust and efficient database structure for your Laravel
+    application.
+  </p>
+  <br /><br />
+
+  <h2>Fetching data with eloquent</h2>
+  <p>
+    Eloquent is Laravel's object-relational mapping (ORM) system. It provides a
+    simple and elegant way to work with database data. Eloquent models represent
+    database tables, and Eloquent queries allow you to fetch data from your
+    database using object-oriented syntax. Eloquent simplifies the process of
+    fetching data from your database, allowing you to work with database records
+    as if they were objects.
+  </p>
+
+  <p>
+    Eloquent in-depth.<br />
+    Eloquent is Laravel's implementation of the Active Record pattern. It
+    provides a powerful and expressive way to interact with your database. With
+    Eloquent, database tables are represented by models, and each model's
+    instance corresponds to a specific row in the table. Eloquent is known for
+    its simplicity and fluency, making it a preferred choice for database
+    operations in Laravel.
+  </p>
+  <p>
+    First things first.<br />
+    Before you can use Eloquent, you need a model that corresponds to a database
+    table. As you've seen in the previous sections, you can create a model using
+    the Artisan command:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      php artisan make:model Post
+         </code></pre>
+  </div>
+  <p>
+    The php artisan make:model Post command will create a new Laravel model
+    class called Post. This model class will represent the posts table in your
+    database. To create the model, the command will generate a new PHP file at
+    app/Models/Post.php. <br />To create the model, the command will generate a
+    new PHP file at <strong> app/Models/Post.php.</strong>
+  </p>
+  <p>
+    After you have created the database, what next?<br />
+    Fetching Records<br />
+    You can use Eloquent to fetch records from your database. For example, to
+    retrieve all posts from the posts table, you can do the following:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      $ posts = Post::all();
+         </code></pre>
+  </div>
+  <p>
+    The all() method returns a collection of Post models. Each model represents
+    a single post in the posts table. In this example, we use the all method on
+    the Post model to retrieve all records from the posts table. Moving on.
+  </p>
+  <br />
+  <p>Querying Data</p>
+  <p>
+    Eloquent provides a wide range of methods for querying data. For example, to
+    find a post by its <strong> id </strong>, you can use the
+    <strong> find</strong> method:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      $ post = Post::find(1);
+         </code></pre>
+  </div>
+  <p>
+    This retrieves the post with an <strong> id</strong> of 1. In the example
+    above, we are using the <strong>find()</strong> method to retrieve the post
+    with the ID of 1. The ><strong> find()</strong> method returns a single
+    <strong>Post</strong> model, or null if no post with the specified ID is
+    found.
+  </p>
+  <p>
+    Once we have retrieved the <strong>Post</strong> model, we can access the
+    post's data using the model's attributes. For example, to get the post's
+    title, we would use the following code:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      $title = $post->title;
+         </code></pre>
+  </div>
+  <p>
+    Alternatively , once you have retrieved the record, you can display it in an
+    edit form, allowing users to make changes. In your view, you can populate
+    the form fields with the existing data:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    &lt;form method="POST" action="/posts/{{ $post->id }}">
+        @method('PUT')
+        @csrf
+        &lt;label for="title">Title:&lt;/label>
+        &lt;input type="text" name="title" id="title" value="{{ $post->title }}">
+        &lt;label for="content">Content:&lt;/label>
+        &lt;textarea name="content" id="content">{{ $post->content }}&lt;/textarea>
+        &lt;button type="submit">Update&lt;/button>
+    &lt;/form>
+         </code></pre>
+  </div>
+  <p>Let us explore what is happening in this example:</p>
+  <ul>
+    <li>
+      The PUT method is used to update the record (remember to include the
+      @method('PUT') directive).
+    </li>
+    <li>
+      The form fields are pre-filled with the existing data from the retrieved
+      record.
+    </li>
+  </ul>
+  <br />
+  <p>
+    We can also use Eloquent to perform other tasks, such as creating, updating,
+    and deleting database records.
+  </p>
+  <ol>
+    <li>Creating posts.</li>
+    <p>
+      To create a new post, you first need to create a new instance of the Post
+      model. Then, you can set the post's attributes, such as the title and
+      content. Finally, you can call the save() method to save the post to the
+      database.
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        $post = new Post();
+        $post->title = 'My New Post';
+        $post->content = 'This is my new post.';
+        $post->save();
+           </code></pre>
+    </div>
+
+    <li>Updating a post</li>
+    <p>
+      To update a post, you first need to retrieve the post from the database
+      using the <strong> find()</strong> method. Then, you can change the post's
+      attributes and call the <strong>save()</strong> method to save the changes
+      to the database.
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        $post = Post::find(1);
+        $post->title = 'My Updated Post';
+        $post->save();
+           </code></pre>
+    </div>
+
+    <li>Deleting a post:</li>
+    <p>
+      To delete a post, you first need to retrieve the post from the database
+      using the find() method. Then, you can call the delete() method to delete
+      the post from the database.
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        $post = Post::find(1);
+        $post->delete();
+           </code></pre>
+    </div>
+    
+  </ol>
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

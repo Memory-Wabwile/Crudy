@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="col-md-12">
+    <h3>Random Fractions and Whole Numbers</h3>
+    <p>In JavaScript, you can generate random numbers using the Math.random() function. This function returns a
+        random floating-point number between 0 and 1 (inclusive of 0 but exclusive of 1).</p>
+
+    <p>To generate a random fraction, you can simply call Math.random(). For example, if you want to generate a
+        random fraction between 0 and 1 (inclusive of 0 but exclusive of 1), you can use the following code:</p>
+
+        <div class="code-wrapper">
+            <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>      
+    <pre><code class="language-js">
+// random fractions and whole numbers
+var randomFraction = Math.random();    </code></pre></div>
+    <p>This will assign a random number to the randomFraction variable.</p>
+    <p>To generate a random whole number between 0 and 19 (inclusive of 0 but exclusive of 20), you can use the
+        Math.floor() function to round down a random number multiplied by the maximum range you want to generate,
+        and then add the minimum value you want to start the range. Here's an example:</p>
+
+        <div class="code-wrapper">
+            <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">var randomWholeNum = Math.floor(Math.random() * 20); </code></pre></div>
+    <p>This will generate a random whole number between 0 and 19 (inclusive of 0 but exclusive of 20), and assign it
+        to the randomWholeNum variable.</p>
+
+    <p>
+        You can adjust the range of the generated whole numbers by changing the arguments to the Math.floor()
+        function. For example, to generate a random whole number between 10 and 99 (inclusive of 10 but exclusive of
+        100), you can use the following code:
+    </p>
+
+    <div class="code-wrapper">
+        <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre> <code class="language-js">var randomWholeNum = Math.floor(Math.random() * 90) + 10; </code></pre></div>
+
+    <h3>parseInt Function</h3>
+    <p>In JavaScript, the parseInt() function is used to parse a string and convert it into an integer.
+        The parseInt() function takes two arguments: the string to parse and the radix or base of the number system
+        used in the string. The radix is an optional argument, and if it's not provided, the parseInt() function
+        assumes that the string represents a decimal number.</p>
+
+
+    <p>
+        Here's an example of using the parseInt() function to convert a string to an integer:
+    </p>
+    <div class="code-wrapper">
+        <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+// parseInt function
+var stringNum = "123";
+var integerNum = parseInt(stringNum);    </code></pre></div>
+    <p>In this example, stringNum is a string that contains the number "123". We pass stringNum as an argument to
+        the parseInt() function, and it returns an integer value of 123, which we store in the integerNum variable.
+    </p>
+
+    <p>
+        If the string contains characters that are not part of a number, the parseInt() function will stop parsing
+        and return the integer value up to that point. For example:
+    </p>
+
+    <div class="code-wrapper">
+        <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+// part 2
+var stringNums = "123abc";
+var integerNums = parseInt(stringNums); </code></pre></div>
+
+    <p>In this example, stringNums contains the characters "123abc". The parseInt() function will stop parsing at
+        the "a" character and return the integer value of 123.</br>
+        You can also specify the radix or base of the number system used in the string by passing a second argument
+        to the parseInt() function. For example, to parse a string representing a binary number, you would use a
+        radix of 2:</p>
+<div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+// part 3
+var binaryNum = "1101";
+var decimalNum = parseInt(binaryNum, 2);    </code></pre></div>
+    <p>In this example, binaryNum is a string representing the binary number "1101". We pass binaryNum and a radix
+        of 2 as arguments to the parseInt() function, and it returns an integer value of 13, which we store in the
+        decimalNum variable.</p></br>
+
+
+    <h3>Ternary Operator</h3>
+    <p>The ternary operator is a shorthand way of writing an if...else statement in JavaScript. It allows you to
+        write a single line of code that performs a conditional operation.
+        The syntax for the ternary operator is as follows:</p>
+    <p><em><strong>condition ? expressionIfTrue : expressionIfFalse;</strong></em></p>
+
+    <p>The condition is an expression that evaluates to a boolean value. If the condition is true, then the
+        expressionIfTrue is evaluated and returned. If the condition is false, then the expressionIfFalse is
+        evaluated and returned.</p>
+
+    <p>Here's an example of using the ternary operator:</p>
+    <div class="code-wrapper">
+        <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre>    <code class="language-js">
+// ternary operator
+var xy = 5;
+var resolt = x > 10 ? "x is greater than 10" : "x is less than or equal to 10";
+console.log(result);    </code></pre></div>
+    <p>
+        In this example, x is assigned the value of 5. The ternary operator checks if x is greater than 10. Since x
+        is not greater than 10, the expressionIfFalse is evaluated and the string "x is less than or equal to 10" is
+        assigned to the result variable. The result variable is then logged to the console.
+        You can also use the ternary operator to assign a value to a variable based on a condition:
+    </p>
+
+    <div class="code-wrapper">
+        <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre>    <code class="language-js">
+// part 2
+var isMember = true;
+var discount = isMember ? 0.1 : 0;
+console.log(discount);    </code></pre></div>
+
+    <p>In this example, the isMember variable is assigned the value true. The ternary operator checks if isMember is
+        true. Since isMember is true, the expressionIfTrue is evaluated and the value of 0.1 is assigned to the
+        discount variable. The discount variable is then logged to the console.</br>
+        The ternary operator is a concise way of writing conditional statements, but it can sometimes make the code
+        harder to read if the conditions and expressions are complex. Use it when it makes your code more readable,
+        but be careful not to sacrifice readability for conciseness.</p>
+
+
+    <h3>Multiple Ternary Operators</h3>
+
+    <p>You can use multiple ternary operators to create more complex conditional statements. This can be useful in
+        cases where you have multiple conditions that need to be evaluated, but you want to keep your code concise.
+    </p>
+    <p>Here's an example of using multiple ternary operators:</p>
+
+    <div class="code-wrapper">
+        <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre>  <code class="language-js">
+// multiple ternary operators
+var age = 25;
+var isStudent = true;
+var discount = age > 18 ? isStudent ? 0.2 : 0.1 : 0;
+console.log(discount);    </code></pre></div>
+
+    <p>In this example, the age variable is assigned the value 25 and the isStudent variable is assigned the value
+        true. The ternary operator checks if age is greater than 18. If it is, then another ternary operator is
+        evaluated that checks if isStudent is true. If isStudent is true, then the expressionIfTrue is evaluated and
+        the value of 0.2 is assigned to the discount variable. If isStudent is false, then the expressionIfFalse is
+        evaluated and the value of 0.1 is assigned to the discount variable. If age is not greater than 18, then the
+        expressionIfFalse is evaluated and the value of 0 is assigned to the discount variable. The discount
+        variable is then logged to the console.</br>In this example, the multiple ternary operators allow us to
+        evaluate multiple conditions in a single line of code. However, the code can become harder to read if the
+        conditions and expressions are complex. Use multiple ternary operators only when they make your code more
+        readable and maintainable.
+    </p>
+
+    <h3>var vs let</h3>
+    <p>In JavaScript, var and let are both used for declaring variables, but they have some key differences.</p>
+
+    <p>var has function scope, while let has block scope. This means that variables declared with var are accessible
+        throughout the entire function they are declared in, while variables declared with let are only accessible
+        within the block they are declared in (a block is defined by curly braces { }).
+        Here's an example to illustrate the difference:</p>
+
+<div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre>   <code class="language-js">
+// var and let
+function example() {
+ var xxy = "hello";
+ let yyz = "world";
+ if (true) {
+   var xxy = "goodbye";
+   let yyz = "universe";
+   console.log(xxy); // "goodbye"
+   console.log(yyz); // "universe"
+ }
+ console.log(xxy); // "goodbye"
+ console.log(yyz); // "world"
+}</code></pre></div>
+
+    <p>In this example, we have a function that declares both var and let variables. Inside the if statement, we
+        declare new variables x and y with the same names as the variables declared outside the if statement. When
+        we log the values of x and y inside the if statement, we can see that the values are different from the
+        values outside the if statement. This is because the variables declared inside the if statement have block
+        scope and are not accessible outside of the block.</br>
+        Another key difference is that variables declared with var are hoisted to the top of their scope, while
+        variables declared with let are not hoisted. This means that you can access a var variable before it's
+        declared, but you can't do that with a let variable. For example:
+    </p>
+
+    <div class="code-wrapper">
+        <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre>    <code class="language-js">
+// part 2
+console.log(aa1); // undefined
+var aa1 = 1;
+console.log(bb2); // ReferenceError: b is not defined
+let bb2 = 2;    </code></pre></div>
+
+    <p>In this example, the var variable aa1 is hoisted to the top of the scope, so we can access it before it's
+        declared. The value of aa1 is undefined at this point. The let variable bb2 is not hoisted, so we get a
+        ReferenceError when we try to access it before it's declared.</p>
+
+    <p>Overall, it's generally recommended to use let instead of var for variable declarations in modern JavaScript
+        code, as it provides block scoping and can help prevent certain types of bugs. </br>However, there are still
+        cases where var is useful, such as when you need to declare a variable that's accessible throughout an
+        entire function.</p>
+
+
+
+    <h3>const Keyword</h3>
+
+    <p>In JavaScript, the const keyword is used to declare a variable that cannot be reassigned a new value.
+        Here's an example:</p>
+
+    <code>const PI = 3.14159;<br/>
+        PI = 3.14; // This will throw an error
+    </code></br>
+    </p>
+
+    <p>In this example, we declare a constant PI and assign it the value 3.14159. If we try to reassign PI to a new
+        value, such as 3.14, JavaScript will throw an error because PI is a constant and cannot be reassigned.
+        </br>
+        It's important to note that const only prevents the variable from being reassigned to a new value. It does
+        not make the variable immutable. For example:</p>
+
+    <code>
+        const person = {<br/>
+        name: "John",<br/>
+        age: 30<br/>
+        };<br/>
+        person.age = 31; // This is allowed</br>
+    </code><br/>
+
+
+    <p>In this example, we declare a constant person that is an object with a name and an age. Although person is a
+        constant, we are able to modify the value of person.age because we are not reassigning person itself to a
+        new value.</p>
+
+
+    <p>It's also important to note that the const keyword does not create a "true" constant value in the sense that
+        the value cannot be changed. For example, if we declare a constant person and assign it an object, the
+        properties of the object can still be modified. However, using const can help prevent unintentional
+        reassignments of variables and can make code more readable and predictable.</p> </br>
+
+
+    <h3>Mutate an Array Declared with const</h3>
+    <p>Although a variable declared with const cannot be reassigned a new value, the properties of an object or the
+        elements of an array declared with const can still be modified.
+        Here's an example of how to mutate an array declared with const:</p>
+
+    <code>const numbers = [1, 2, 3]; <br/>
+        numbers.push(4); // This is allowed
+    </code>
+
+    <p>In this example, we declare a constant “numbers” that is an array containing the values [1, 2, 3]. Although
+        numbers is a constant, we are able to modify the value of numbers by using the push() method to add the
+        value 4 to the end of the array.</p>
+
+    <p>Similarly, we can use other array methods, such as pop(), shift(), unshift(), splice(), and sort(), to modify
+        the contents of an array declared with const.</p>
+
+    <p>It's important to note that although the contents of an array or an object declared with const can be
+        modified, it's generally not a good practice to do so because it can make the code harder to understand and
+        debug. It's often better to declare a new array or object if you need to make significant changes to its
+        contents.</p> </br>
+
+    <h3>Prevent Object Mutation</h3>
+
+    <p>In JavaScript, the Object.freeze() method can be used to prevent an object from being modified. When an
+        object is frozen, its properties cannot be added, deleted, or modified.
+        Here's an example:</p>
+
+        <div class="code-wrapper">
+            <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">// prevent object mutation
+    const persson = {
+     name: "John",
+     age: 30
+    };
+    Object.freeze(persson);
+    persson.age = 31; // This will not modify the age property
+    persson.email = "john@example.com"; // This will not add a new email property
+    delete persson.name; // This will not delete the name property</code></pre></div>
+
+
+    <p>In this example, we declare a constant person that is an object with a name and an age. We then use the
+        Object.freeze() method to freeze the object, preventing its properties from being modified.</p>
+
+    <p>If we try to modify the person object by changing the value of its age property, adding a new email property,
+        or deleting its name property, JavaScript will not throw an error, but the object will remain unchanged
+        because it has been frozen.</p>
+
+    <p>It's important to note that Object.freeze() only makes the object immutable on the top level, so the
+        properties of any nested objects or arrays can still be modified. If you need to prevent modification of
+        nested properties, you'll need to use Object.freeze() recursively on each nested object or array.
+    </p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="butons">
+        <button class="btn btn-outline-primary">
+            <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+        </button>
+        <button class="btn btn-outline-primary">
+            <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+        </button>
+    </div>
+</div>
+</div>
+{% endblock %}

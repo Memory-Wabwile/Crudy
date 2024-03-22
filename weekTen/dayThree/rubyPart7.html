@@ -1,0 +1,306 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <p>Now when you refresh the page, this is the outcome</p>
+
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby15.png'%}" alt="" />
+  <p>Next, let us center the text for editing the property page.</p>
+  <p><strong>app/views/properties/edit.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;h1 class="text-center" >Editing property&lt;/h1>
+        &lt;%= render "form", property: @property %>        
+        
+        &lt;br>        
+        
+        &lt;div class="text-center" >
+        &lt;%= link_to "Show this property", @property %> |
+        &lt;%= link_to "Back to properties", properties_path %>
+        &lt;/div>
+        
+     </code></pre>
+  </div>
+  <p>
+    When you click on the “back to properties” link that is on the bottom of the
+    page, you will notice that the page is not styled. Let us now style this
+    page with some bootstrap classes and css.
+  </p>
+  <p><strong>app/views/properties/index.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;p style="color: green">&lt;%= notice %>&lt;/p>
+
+
+        &lt;div class="row" id="properties">
+            &lt;% @properties.each do |property| %>
+            &lt;div class="col-lg-4 my-3" id="home-property" >
+            &lt;h3 class="text-center " > &lt;%= property.name %>&lt;/h3>
+            &lt;% if property.photo.attached? %>
+            &lt;%= image_tag property.photo, class: "img-fluid" %>
+            &lt;% else %>
+            &lt;p>No photo available&lt;/p>
+            &lt;% end %>
+            &lt;h5> &lt;%= property.address %>&lt;/h5>
+            &lt;p class="text-center" >
+            &lt;%= link_to "Show this property", property , class:"show-more-link" %>
+            &lt;/p>
+            &lt;/div>
+            &lt;% end %>
+        &lt;/div>
+        
+     </code></pre>
+  </div>
+  <p><strong>app/assets/stylesheets/application.css</strong></p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-css">
+        #home-property{
+            border-radius: 5px;
+            box-shadow: 5px 5px 5px #ccc;
+            }
+            #home-property img{
+            width: 100%;
+            height: 25vh;
+            }
+            #home-property h3{
+            text-transform: uppercase;
+            }
+            .show-more-link {
+            text-decoration: none;
+            }
+            
+        
+     </code></pre>
+  </div>
+  <p>This should be the outcome on your browser at 127.0.0.1:3000/properties</p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby16.png'%}" alt="" />
+
+  <p>
+    The home page that we had had some static data in it. Now we can make this
+    index page to be the root of our project. To achieve this, we replace the
+    initial code from <strong><em> root to: ‘public#main’</em></strong> in the
+    <strong>routes.rb </strong> file to
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        root to: 'properties#index'
+     </code></pre>
+  </div>
+  <p>Now this becomes our home page.</p>
+  <p>
+    Now when you click on the “show this property” link the page is not styled.
+    Let’s work on this now.Modify the property.html file and add some classes
+    onto the files so that we can use them for styling.
+  </p>
+  <p><strong>app/views/properties/_property.html.erb</strong></p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;div class="single-property" id="&lt;%= dom_id property %>">
+            &lt;h1 class="m-3" >
+               &lt;%= property.name %>
+            &lt;/h1>            
+            
+            &lt;p class="property-photo" >
+                &lt;% if property.photo.attached? %>
+                &lt;%= image_tag property.photo %>
+                &lt;% else %>
+                No photo available
+                &lt;% end %>
+            &lt;/p>            
+            
+            &lt;p>
+                &lt;strong>Address:&lt;/strong>
+                &lt;%= property.address %>
+            &lt;/p>            
+            
+            &lt;p>
+                &lt;strong>Price:&lt;/strong> $
+                &lt;%= property.price %>
+            &lt;/p>            
+            
+            &lt;p>
+                &lt;strong>Rooms:&lt;/strong>
+                &lt;%= property.rooms %>
+            &lt;/p>
+            
+            
+            &lt;p>
+                &lt;strong>Bathrooms:&lt;/strong>
+                &lt;%= property.bathrooms %>
+            &lt;/p>
+        &lt;/div>
+            
+     </code></pre>
+  </div>
+  <p>You can style the page according to your own preference.</p>
+  <p><strong>app/assets/stylesheets/application.css</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-css">
+        /* styles for single property page */
+        .single-property h1{
+        text-transform: uppercase ;
+        }
+        .property-photo img{
+        display: block;
+        margin: 0 auto;
+        height: auto;
+        max-width: 70%;
+        }
+        .single-property{
+        font-size: 2rem;
+        text-align: center;
+        }        
+            
+     </code></pre>
+  </div>
+  <p>
+    Refresh the page to see the changes.<br />
+    Now let us add the styles for the links at the bottom left of the page.<br />
+    Add a class to the file then we will use it to add styles.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-html">
+        &lt;p style="color: green">&lt;%= notice %>&lt;/p>
+
+        &lt;%= render @property %>            
+            
+        &lt;div class="single-property-link" >
+            &lt;%= link_to "Edit this property", edit_property_path(@property) %> |
+            &lt;%= link_to "Back to properties", properties_path %>
+            &lt;h6>
+            &lt;%= button_to "Destroy this property !!!", @property, method: :delete %>
+            &lt;/h6>
+        &lt;/div>
+         </code></pre>
+  </div>
+  <p>Add the following styles in the css file</p>
+  <p><strong>app/assets/stylesheets/application.css</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-css">
+            .single-property-link {
+                text-align: center;
+                }
+                .single-property-link button {
+                background-color: #ff2400;
+                border-radius: 5px;
+                border: none;
+                margin-top: 5px;
+                text-transform: uppercase;
+                padding: 5px 10px;
+                font-weight: 400;
+                }
+                                
+         </code></pre>
+  </div>
+  <p>
+    Now after creating a new property/ clicking on a specific property, this is
+    how the information is displayed.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby17.png'%}" alt="" />
+  <p>
+    Back to our index page which is our home page, let us add a search bar for
+    searching properties by their location.<br />
+    Just before the div of id properties, let us add the div below.
+  </p>
+  <p><strong>app/views/properties/index.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-html">
+        &lt;div class="search">
+            &lt;h1 class="display-3 text-center "> Search for your new home today... &lt;/h1>
+            &lt;div class="row">
+                &lt;div class="col-3">&lt;/div>
+                &lt;div class="col-6">
+                &lt;%= form_with(url: properties_path, method: "get") do %>
+                &lt;div class="input-group">
+                &lt;%= text_field_tag :address, params[:address], class: "form-control", placeholder: "Search by Address" %>
+                &lt;%= submit_tag "Search", class: "btn btn-secondary" %>
+                &lt;/div>
+                &lt;% end %>
+                &lt;/div>
+                &lt;div class="col-3">&lt;/div>
+                &lt;/div>
+            &lt;/div>
+            &lt;h1 class="text-center my-4" >Properties&lt;/h1>
+            &lt;a href="&lt;%= new_property_path %>" class="btn btn-primary">Add Property&lt;/a>
+            
+            
+            # &lt;div class="row" id="properties">
+                            
+         </code></pre>
+  </div>
+  <p>
+    Let us modify the index function in the controllers file so that it can be
+    able to display the searched property in case a user searches for a specific
+    address and if not, it displays all the properties.
+  </p>
+  <p><strong>app/controllers/properties_controller.rb</strong></p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        class PropertiesController &lt; ApplicationController
+
+
+        # GET /properties or /properties.json
+        def index
+           if params[:address].present?
+               @properties = Property.where("address ILIKE ?", "%#{params[:address]}%")
+           else
+               @properties = Property.all
+           end
+        end
+        # Other actions (show, new, create, etc.)
+        end        
+                            
+         </code></pre>
+  </div>
+  <p>
+    Now we add a route for the search function. This modification includes a
+    search action in the properties resource as part of the collection routes.
+    This will enable a route for the search functionality in your
+    PropertiesController. After adding this to your routes.rb file, you should
+    be able to use the search_properties_path that we had added in our search
+    form within your application to perform a search for properties. Modify the
+    resources as shown below.
+  </p>
+
+  <p><strong>config/routes.rb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        resources :properties do
+        collection do
+            get 'search' 
+        end
+        end
+                          
+         </code></pre>
+  </div>
+  <p>This is how the page looks at this point.</p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby18.png'%}" alt="" />
+
+<p>This is how the page looks at this point and you can successfully search for properties.</p>
+
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby19.png'%}" alt="" />
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,203 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h2>Router set up</h2>
+  <p>
+    Now our Express server is working very well. The one endpoint that we have
+    created is evidence that the server is working. There is however a question
+    we should ask ourselves. Will we set up all our paths in the serve.js file?
+    Well, it is possible but it is not a proper implementation. This is because
+    the serve.js file will be overloaded if we have numerous paths to set up.
+  </p>
+  <p>
+    It is for this reason that we are setting up a router for our project.
+    <br />
+    We add a routes directory in which we will create the routes files. We will
+    begin by creating a contactRoutes.js file:
+  </p>
+  <p>
+    In the routes file we have just created, we will begin by importing express
+    using the command
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    
+        const express = require('express');
+        const router = express.Router
+         </code></pre>
+  </div>
+  <p>After the above imports, we will define the route as follows:</p>
+  <img class="img-fluid" src="{% static 'Images/node/node65.png'%}" alt="" />
+  <p>
+    We are using the router we just defined to take up the route method. Inside
+    the method, we specify the path it will take, the response, and request it
+    can access using the get method, and the function to display the response.
+  </p>
+  <p>
+    Since we have now specified the path in our paths file, we will move to our
+    serv.js file and add what we call middleware. This is what will link the
+    path to the server service that is being requested.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node66.png'%}" alt="" />
+  <p>
+    App. use is what we are referring to as the middleware. Inside the middle
+    wear, we will specify the path and the route to our paths.
+  </p>
+  <p>
+    The final step is ensuring that we export the route that we just created.
+    Move back to the contactRoutes file and export the route using the command:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    
+        module.exports = router;
+         </code></pre>
+  </div>
+  <p>
+    If we request the Thunder client, we will get the same response we had
+    initially.<br />
+    Now let us create several routes for the various endpoints that we want to
+    have.<br />
+    In the crawling section of this project, we identified that we will have
+    endpoints for getting contacts, creating contacts, getting a single contact,
+    updating a contact, and deleting contacts, we will create routes for all
+    these endpoints using their respective methods as specified in the Rest Api
+    convention in earlier in this project. We will set up the routes as follows:
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node67.png'%}" alt="" />
+  <p>
+    The second route will use a post method to create a new contact. The third
+    route will get a single contact by using the ID. When an ID is provided, we
+    retry the ID by ensuring that we request the parameter which in this case is
+    the di. For the fourth and fifth routes, we are using the put and delete
+    methods to update and delete a contact respectively using the ID. Below are
+    tests on our Thunder client:
+  </p>
+  <p>
+    <strong><em>Getting all contacts on our app </em></strong>
+  </p>
+  <img
+    class="img-fluid"
+    src="{% static 'Images/node/node68.png'%}"
+    alt=""
+  /><br />
+
+  <p>
+    <strong><em>Creating a contact in our app </em></strong>
+  </p>
+  <img
+    class="img-fluid"
+    src="{% static 'Images/node/node69.png'%}"
+    alt=""
+  /><br />
+
+  <p>
+    <strong><em>Getting a single contact in our app</em></strong>
+  </p>
+
+  <img
+    class="img-fluid"
+    src="{% static 'Images/node/node70.png'%}"
+    alt=""
+  /><br />
+
+  <p>
+    <strong><em>Updating a single contact in the app</em></strong>
+  </p>
+  <img
+    class="img-fluid"
+    src="{% static 'Images/node/node71.png'%}"
+    alt=""
+  /><br />
+
+  <p>
+    <strong><em>Deleting a single contact in the app </em></strong>
+  </p>
+  <img
+    class="img-fluid"
+    src="{% static 'Images/node/node72.png'%}"
+    alt=""
+  /><br /><br />
+
+  <h2>Creating controllers</h2>
+  <p>
+    We have all our routes set up and tested. After all, endpoints have been
+    tested and ascertained to be working, we need to provide the logic that will
+    govern or moderate how these paths and the resources that come with them
+    from the server are accessed. Concerning this, we will have what we call
+    controllers. In the outproject, we will have a controllers directory in
+    which we will create a contactController.js file.
+  </p>
+  <p>
+    In our controller file, there are three key things that we have to include
+    in our logic:
+  </p>
+  <ol>
+    <li>
+      Description => defining what the logic is set to do or achieve e.g. get
+      all contacts.
+    </li>
+    <li>Route => the method and path.</li>
+    <li>Access => how the method can be accessed.</li>
+  </ol>
+  <img class="img-fluid" src="{% static 'Images/node/node73.png'%}" alt="" />
+  <p>
+    For now, we have set the access to public but we shall change it to private
+    when we bring the authentication part on board.
+  </p>
+  <p>
+    We will start by creating a getContacts controller and shift the logic from
+    the routes file to the controller file:
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node74.png'%}" alt="" />
+  <p>
+    We have created a controller called getContacts. It takes the same logic we
+    had created on the routes for the get-all contacts. In the logic, we have
+    added a static that we would like to see for the endpoint. Having shifted
+    the logic from the URLs to the controller, we will have to import the
+    controller into our URLs and then use the controller inside the route:
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node75.png'%}" alt="" />
+  <p>
+    We will then create controllers for all other CRUD operations and update the
+    routes as follows:
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node76.png'%}" alt="" />
+  <p>
+    Our router file will also be updated based on the changes and controllers
+    above as shown below:
+  </p>
+  <img
+    class="img-fluid"
+    src="{% static 'Images/node/node77.png'%}"
+    alt=""
+  /><br />
+
+  <h2>Multiple HTTP methods per route</h2>
+  <p>
+    If you take a look at the routes we have above, the first two, getContact
+    and createContact have the same route. This is the same case for the last
+    three methods. To save space on our router file, we can simply have the
+    methods with the same route under one route as shown below:
+  </p>
+  <img
+  class="img-fluid"
+  src="{% static 'Images/node/node78.png'%}"
+  alt=""
+/>
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

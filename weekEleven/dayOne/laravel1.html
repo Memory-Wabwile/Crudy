@@ -1,0 +1,328 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h1>LARAVEL</h1>
+  <h2>Introduction to laravel</h2>
+  <p>
+    Welcome to the world of Laravel, one of the most popular and beloved PHP web
+    application frameworks. In this section, we'll embark on a journey to
+    explore the fascinating world of Laravel and understand why it's the
+    framework of choice for web developers worldwide.
+  </p>
+  <p>
+    Laravel was created by Taylor Otwell and released in 2011. It has since
+    evolved and gained immense popularity due to its developer-friendly features
+    and its active community. Notable companies and projects, including Deltanet
+    Travel and Laracasts, rely on Laravel for their web development needs.
+  </p>
+  <p>
+    <strong><em>So the question now becomes, what is laravel;</em></strong>
+  </p>
+  <p>
+    Laravel is a popular PHP framework that is known for its elegance,
+    expressiveness, and robustness. It is a full-stack framework, meaning that
+    it can be used to develop both the front-end and back-end of a web
+    application. It is also based on the Model-View-Controller (MVC)
+    architectural pattern, which separates the application's data, presentation,
+    and logic into three separate components. This makes Laravel applications
+    more scalable and maintainable. Laravel includes a number of built-in
+    features that make it easy to develop secure and robust web applications,
+    such as authentication and authorization, routing, database access,
+    templating, caching, and testing. It also has a large and active community,
+    which means that there are many resources available to help developers learn
+    and use the framework.
+  </p>
+
+  <h3>Why Use Laravel?</h3>
+  <p>Here is why Laravel is a go-to choice for web developers:</p>
+
+  <ol>
+    <li>Elegant Syntax</li>
+    <p>
+      Laravel's syntax is clean and expressive. It makes coding enjoyable and
+      easy to read. Take a look at a simple example:
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            // Routing in Laravel
+            Route::get('/hello', function () {
+            return 'Hello, Laravel!';
+            });
+            
+         </code></pre>
+    </div>
+    <p>
+      The code above demonstrates the simplicity and readability of Laravel. It
+      defines a route for the /hello URL, which will return the string Hello,
+      Laravel!.
+    </p>
+
+    <li>Rich Ecosystem</li>
+    <p>
+      Laravel has a vast ecosystem of packages and libraries available via
+      Composer, a dependency management tool for PHP. This ecosystem extends
+      Laravel's functionality and can save you a tremendous amount of
+      development time. Laravel's rich ecosystem of packages and libraries is
+      one of its greatest strengths. It allows developers to quickly and easily
+      add new features and functionality to their Laravel applications without
+      having to write all of the code themselves.
+    </p>
+    <p>
+      The Laravel ecosystem includes packages for a wide range of tasks, such
+      as:
+    </p>
+    <p>
+      Authentication and authorization, Caching, Email, File handling, Forms,
+      Images, Jobs, Payments, Search, Social media integration, Testing,
+      Validation.
+    </p>
+    <p>
+      There are also many packages that provide specialized functionality for
+      specific industries or applications. For example, there are packages for
+      e-commerce, blogs, forums, and social networking sites.
+    </p>
+
+    <li>Developer-Friendly</li>
+    <p>
+      Laravel provides great features that allow developers to focus on building
+      the application's unique features. This makes it a framework that
+      developers genuinely love to work with. These features include:
+    </p>
+    <ul>
+      <li>
+        Routing: Laravel's routing system is very powerful and flexible, and it
+        makes it easy to define the URLs of your web application.
+      </li>
+      <li>
+        Database migrations: Laravel's database migration system makes it easy
+        to create and manage your database schema.
+      </li>
+      <li>
+        Authentication: Laravel's authentication system is robust and easy to
+        use. It provides a variety of authentication options, such as email and
+        password, social login, and two-factor authentication.
+      </li>
+      <li>
+        Templating: Laravel's templating system makes it easy to create and
+        render HTML templates.
+      </li>
+      <li>
+        Caching: Laravel's caching system makes it easy to improve the
+        performance of your web application by caching frequently accessed data.
+      </li>
+      <li>
+        Testing: Laravel's testing framework makes it easy to write and run unit
+        tests and integration tests.
+      </li>
+    </ul>
+
+    <li>Strong Community</li>
+    <p>
+      The Laravel community is vibrant and passionate. You can find extensive
+      documentation, tutorials, and forums where you can seek help and share
+      your knowledge. The community's collective expertise is invaluable for
+      developers at all levels.<br />
+      The Laravel community is also very supportive of new developers. There are
+      many resources available to help beginners learn Laravel, such as
+      tutorials, blog posts, and online courses. There are also a number of
+      experienced Laravel developers who are willing to mentor new developers
+      and help them get started.
+    </p>
+  </ol>
+  <br />
+
+  <p>
+    To start your journey with Laravel, you'll need to set up your development
+    environment. You should have:
+  </p>
+  <ul>
+    <li>
+      PHP: Laravel is a PHP framework, so you need PHP installed on your
+      development machine.
+    </li>
+    <li>
+      Composer: Composer is a dependency manager for PHP. It's used to install
+      and manage Laravel packages.
+    </li>
+    <li>
+      Web Server: You'll need a web server like Apache or Nginx to serve your
+      Laravel application.
+    </li>
+  </ul>
+  <p>
+    In the next part of the tutorial, we will guide you through the process of
+    installing Laravel and setting up your development environment. This will
+    prepare you for hands-on Laravel development in the subsequent sections.
+  </p>
+  <br /><br />
+
+  <h2>Environment setup and laravel installation</h2>
+  <p>
+    In this part, we will guide you through the process of setting up your
+    development environment and installing Laravel. Before diving into the world
+    of Laravel development, it's crucial to have a working environment that
+    enables you to create, test, and deploy web applications.
+  </p>
+  <p>
+    To get started with Laravel, you'll need to ensure that you have the
+    following prerequisites in place:
+  </p>
+
+  <ol>
+    <li>PHP:</li>
+    <p>
+      Laravel is a PHP framework, so you need to have PHP installed on your
+      system. You can check if PHP is installed by opening your terminal or
+      command prompt and running the following command:
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $ php -v              
+           </code></pre>
+    </div>
+    <p>
+      If PHP is not installed, you can install it using the package manager:
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $ sudo apt update
+            $ sudo apt install php
+            
+           </code></pre>
+    </div>
+
+    <li>Composer:</li>
+    <p>
+      Composer is a dependency management tool for PHP and is essential for
+      managing Laravel's dependencies and packages. You can check if Composer is
+      installed by running:
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $ composer --version
+              
+             </code></pre>
+    </div>
+    <p>
+      If Composer is not installed, you can install it using the following
+      commands:
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $ sudo apt update
+            $ sudo apt install composer
+            
+             </code></pre>
+    </div>
+
+    <li>Web Server:</li>
+    <p>
+      You'll need a web server to serve your Laravel application. Apache and
+      Nginx are common choices. To install Apache, you can run:
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $ sudo apt update
+            $ sudo apt install apache2          
+              
+               </code></pre>
+    </div>
+    <p>Alternatively you can also use Nginx. To install Nginx, you can run:</p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $ sudo apt update
+            $ sudo apt install nginx            
+              
+               </code></pre>
+    </div>
+    <p>
+      Next, we install the php-xml package that provides PHP with the ability to
+      work with XML files and perform XML-related tasks.
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $ sudo apt install php-xml           
+                
+                 </code></pre>
+    </div>
+    <p>
+      Finally we will add php-curl which is a part of PHP, the language used to
+      create awesome things on the internet. PHP-curl helps PHP talk to other
+      websites and services. It's like giving PHP a special tool to reach out
+      and grab information from the internet, just like a superhero using a
+      long-reaching arm to bring things closer.
+    </p>
+  </ol>
+
+  <p>
+    Finally we will add php-curl which is a part of PHP, the language used to
+    create awesome things on the internet. PHP-curl helps PHP talk to other
+    websites and services. It's like giving PHP a special tool to reach out and
+    grab information from the internet, just like a superhero using a
+    long-reaching arm to bring things closer.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ sudo apt install php-curl       
+              
+               </code></pre>
+  </div>
+  <p>
+    Now that you have the prerequisites in place, it's time to install Laravel
+    on your Ubuntu system. Laravel uses Composer for installation. Here's how
+    you can create a new Laravel project:
+  </p>
+  <ol>
+    <li>
+      Open your terminal: Navigate to the directory where you want to create
+      your Laravel project.
+    </li>
+    <li>Run the following Composer command to create a new Laravel project:</li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            $ composer create-project --prefer-dist laravel/laravel my-laravel-app    
+                  
+                   </code></pre>
+    </div>
+    <img
+      class="img-fluid"
+      src="{% static 'Images/laravel/laravel1.png'%}"
+      alt=""
+    />
+    <li>
+      Wait for Composer to download and install Laravel. This process may take a
+      few minutes, depending on your internet connection speed.
+    </li>
+    <p>This is how it looks after successful installation.</p>
+    <img
+      class="img-fluid"
+      src="{% static 'Images/laravel/laravel2.png'%}"
+      alt=""
+    />
+    <li>
+      Once the installation is complete, you will have installed the Laravel
+      project in your chosen directory. Navigate to the project then open with
+      visual studio code.
+    </li>
+  </ol>
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

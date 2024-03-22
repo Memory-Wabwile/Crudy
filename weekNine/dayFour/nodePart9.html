@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+ 
+    <h1>POST Request Middleware</h1>
+  <img class="img-fluid" src="{% static 'Images/node/node65.png'%}" alt="" />
+
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

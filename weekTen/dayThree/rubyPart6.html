@@ -1,0 +1,450 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <p>
+    Run the server using rails s . this should be the results on the browser at
+    this point.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby10.png'%}" alt="" />
+
+  <p>
+    Moving on, let us create the login page. We will incorporate bootstrap
+    login.
+  </p>
+  <p><strong>app/views/devise/sessions/new.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;section class="form-auth ">
+            &lt;%= form_for(resource, as:resource_name, url:session_path(resource_name), class:"form-signin") do |f| %>          
+            
+            
+            
+            &lt;h1 class="h3 mb-3 fw-normal">Please sign in&lt;/h1>
+            &lt;label class="mt-3" for="floatingInput">Email address&lt;/label>
+            &lt;%= f.email_field :email, autofocus: true, class:"form-control", id:"inputEmail",placeholder:"Email address", autocomplete: "current-email" %>
+            &lt;label class="mt-3" for="floatingPassword">Password&lt;/label>
+            &lt;%= f.password_field :password, autocomplete: "current-password", placeholder:"Password" , class:"form-control", id:"inputPassword" %>
+            &lt;div class="checkbox mb-3">
+            &lt;label>
+            &lt;input type="checkbox" value="remember-me"> Remember me
+            &lt;/label>
+            &lt;/div>
+            &lt;button class="w-100 btn btn-lg btn-primary" type="submit">Sign in&lt;/button>
+            &lt;p class="mt-5 mb-3 text-muted">© 2022–2023&lt;/p>
+            
+            
+            &lt;% end %>
+            
+            
+             &lt;%= render "devise/shared/links" %>
+        &lt;/section>            
+            
+                     
+         </code></pre>
+  </div>
+  <p>
+    Next let us create a stylesheet for devise. This will be the styles for both
+    sign up and login.
+  </p>
+
+  <p><strong>app/assets/stylesheets/devise.scss</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        .form-auth {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+            margin-top: 80px;            
+            
+            .checkbox {
+            font-weight: 400;
+            }            
+            
+            .form-control {
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+            padding: 10px;
+            font-size: 16px;
+            }            
+            
+            .form-control:focus {
+            z-index: 2;
+            }            
+            
+            input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+            }            
+            
+            input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            }
+            }
+            
+         </code></pre>
+  </div>
+  <p>On the terminal add sassc file to your Gemfile.</p>
+
+  <p><strong>Gemfile</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        gem 'sassc'
+         </code></pre>
+  </div>
+  <p>Then run the bundle command on your terminal then restart your server.</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ bundle install
+         </code></pre>
+  </div>
+  <p>
+    On the browser when you click on “Log in” on the navbar. You should have the
+    outcome below.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby11.png'%}" alt="" />
+  <p>
+    Let us now add the code for sign up. We will use the code for login with a
+    few edits.
+  </p>
+  <p><strong>app/views/devise/registrations/new.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;section class="form-auth">
+
+
+            &lt;%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            &lt;h1 class="h3 mb-3 font-weight-normal">Please Sign Up &lt;/h1>
+            &lt;%= render "devise/shared/error_messages", resource: resource %>
+            &lt;%= f.text_field :first_name, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "First Name" %>
+            &lt;%= f.text_field :last_name, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Last Name" %>
+            &lt;%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email" %>
+            &lt;%= f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder: "Password" %>
+            &lt;%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", placeholder: "Confirm Password" %>
+            &lt;button class="btn btn-lg btn-primary btn-block" type="submit">Sign up &lt;/button>
+            &lt;% end %>
+            &lt;%= render "devise/shared/links" %>
+        &lt;/section>
+            
+         </code></pre>
+  </div>
+  <p>
+    Now that we are done with these, let’s move to to add the parameters to the
+    application controller
+  </p>
+  <p><strong>app/controllers/application_controller.rb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        class ApplicationController &lt; ActionController::Base
+        before_action :configure_permitted_parameters, if: :devise_controller?
+        protected
+        
+        
+        def configure_permitted_parameters
+        devise_parameter_sanitizer.permit(:update,keys: [:first_name, :last_name, :url])
+        devise_parameter_sanitizer.permit(:sign_up,keys: [:first_name, :last_name])
+        # do |user_params|
+        end
+        end        
+            
+         </code></pre>
+  </div>
+  <p>
+    Run the server and now when you click on sign up, you should be able to see
+    the form below.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby12.png'%}" alt="" />
+  <p>
+    You should now be able to sign up and log in to the system successfully.
+  </p>
+
+  <p>
+    If you sign up and login, you’ll notice that you still see sign up and login
+    on the navbar. On the sign up and login part on the navbar, let us add some
+    restrictions so that the user can be able to see the log out link when they
+    are logged in and when they are not logged in they should be able to see the
+    sign up and login buttons.
+  </p>
+  <p><strong>app/views/layouts/nav/_public.hrml.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;% if account_signed_in? %>
+        &lt;li class="nav-item">
+        &lt;%= link_to "Log Out", destroy_account_session_path, method: :delete, class:"nav-link" %>
+        &lt;/li>
+        &lt;% else %>
+        &lt;li class="nav-item">
+        &lt;%= link_to "Log In", new_account_session_path, class:"nav-link" %>
+        &lt;/li>
+        &lt;li class="nav-item">
+        &lt;%= link_to "Sign Up", new_account_registration_path, class:"nav-link" %>
+        &lt;/li>
+        &lt;% end %>
+         </code></pre>
+  </div>
+  <p>
+    Next, let’s add the functionality of adding a new property. Inside the
+    properties folder, you’ll see all the files for adding a new property,
+    displaying the added property, deleting and editing a property.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby13.png'%}" alt="" />
+  <p>
+    In the form.html file ensure that the div for the image upload is a form
+    field instead of a text field.
+  </p>
+  <p><strong>app/views/properties/_form.html.erb</strong></p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;div>
+            &lt;%= form.label :photo, style: "display: block" %>
+            &lt;%= form.file_field :photo %>
+        &lt;/div>
+         </code></pre>
+  </div>
+  <p>
+    Next, we have to add active storage in the gemfile . Active Storage is a
+    valuable addition to Rails for applications that need to manage
+    user-uploaded files or images. It streamlines file handling, making it
+    easier to build and maintain applications with file upload and storage
+    requirements. Since we are going to be uploading files on our site, we will
+    need active storage.
+  </p>
+  <p>Add the code below in the <strong>Gemfile</strong> .</p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        gem 'activestorage'
+         </code></pre>
+  </div>
+
+  <p>
+    You should be having the code below in the application.rb file but in case
+    you do not have, you can add it.
+  </p>
+
+  <p><strong>config/application.rb</strong></p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        require "rails/all"
+         </code></pre>
+  </div>
+  <p>
+    Next, we run bundle install to ensure that the active storage is included in
+    the rails application.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ bundle install
+         </code></pre>
+  </div>
+  <p>Proceed with setting up Active Storage for file uploads as follows:</p>
+  <ul>
+    <li>
+      Run the Active Storage migration to create the necessary tables in your
+      database:
+    </li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        $ rails active_storage:install
+        $ rails db:migrate
+        
+         </code></pre>
+    </div>
+    <li>In our models file, we define the “has_one_attached” association</li>
+    <p><strong>app/models/property.rb</strong></p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+    class Property &lt; ApplicationRecord
+        has_one_attached :photo
+     end
+     
+         </code></pre>
+    </div>
+    <li>
+      Next we configure active storage to use our preferred storage service. For
+      now we will use the configuration for the local disk. In production, this
+      configuration will be changed to your preferred storage service.<br />
+      Inside the config file, create a file named storage.yml and add the code
+      below.
+    </li>
+    <p><strong>config/storage.yml</strong></p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        # 
+        Local:
+       service: Disk
+       root: &lt;%= Rails.root.join("storage") %>
+         </code></pre>
+    </div>
+    <li>
+      Specify the active storage service name in the rails app configuration.
+    </li>
+    <p><strong>config/environments/development.rb</strong></p>
+
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        Rails.application.configure do
+        # ... other configuration ...        
+        
+        config.active_storage.service = :local        
+        
+        # ... other configuration ...
+        end
+        
+         </code></pre>
+    </div>
+    <li>Lastly, correct the view on the template for displaying the image.</li>
+    <p><strong>app/views/properties/_property.html.erb</strong></p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+        &lt;p>
+            &lt;% if property.photo.attached? %>
+            &lt;%= image_tag property.photo %>
+            &lt;% else %>
+            No photo available
+            &lt;% end %>
+        &lt;/p>
+        
+         </code></pre>
+    </div>
+  </ul>
+
+  <p>
+    In our main.html file let us replace the learn more button with the add
+    property button. This has a link that directs you to the ‘add a new property
+    page.
+  </p>
+
+  <p><strong>app/views/public/main.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      &lt;a href="&lt;%= new_property_path %>" class="btn btn-primary"> Add Property&lt;/a>
+      
+       </code></pre>
+  </div>
+  <p>
+    Restart the server. <br />On our home page when you click the Add property
+    button, it should be able to direct you to the page of adding a new
+    property.
+  </p>
+  <p>This is how the form looks on this page.</p>
+  <img class="img-fluid" src="{% static 'Images/ruby/ruby14.png'%}" alt="" />
+  <p>
+    With this, you should be able to add a new property, to update and delete.
+    But the pages do not look appealing. Let us do something about this.Add some
+    classes on the new.html file.
+  </p>
+  <p><strong>app/views/properties/new.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      &lt;h1 class="text-center my-3" >New property&lt;/h1>
+      &lt;%= render "form", property: @property %>      
+      
+      &lt;br>      
+      
+      &lt;div class="text-center" >
+         &lt;%= link_to "Back to properties", properties_path %>
+      &lt;/div>      
+      
+       </code></pre>
+  </div>
+  <p>Next, let us add some classes to the form for adding a new property</p>
+  <p><strong>app/views/properties/_form.html.erb</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      &lt;%= form_with(model: property,local: true, html: { class: 'property-form' }) do |form| %>
+      &lt;% if property.errors.any? %>
+      &lt;div style="color: red">
+      &lt;h2> &lt;%= pluralize(property.errors.count, "error") %> prohibited this property from being saved: &lt;/h2>      
+      
+      &lt;ul>
+      &lt;% property.errors.each do |error| %>
+      &lt;li> &lt;%= error.full_message %> &lt;/li>
+      &lt;% end %>
+      &lt;/ul>
+      &lt;/div>
+      &lt;% end %>      
+      
+      &lt;div class="form-group">
+      &lt;%= form.label :name, style: "display: block" %>
+      &lt;%= form.text_field :name,class: 'form-control' %>
+      &lt;/div>
+            
+      &lt;div class="form-group" >
+      &lt;%= form.label :address, style: "display: block" %>
+      &lt;%= form.text_field :address,class: 'form-control' %>
+      &lt;/div>      
+      
+      # Add similar classes of form-group and form control to other form fields    
+           
+      
+      &lt;div class="actions" >
+      &lt;%= form.submit %>
+      &lt;/div>
+      &lt;% end %>
+      
+       </code></pre>
+  </div>
+  <p>Head over to our stylesheet to add some styles.</p>
+  <p><strong>app/assets/stylesheets/application.css</strong></p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        /* styles for adding new property form */
+        .property-form {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        }
+        .property-form .form-group {
+        margin-bottom: 20px;
+        }
+        .property-form .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        }
+        
+       </code></pre>
+  </div>
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,287 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h1>NPM Modules</h1>
+  <p>
+    NPM is the abbreviation for Node Package Manager and when you install
+    node.js you also install npm from the official npm documentation site
+    <a href="https://www.npmjs.com/" target="_blank"> here </a> .
+  </p>
+  <p>
+    NPM gives us thousands of packages to use in our application. The difference
+    between a node common core module and an NPM package is that npm packages
+    are node modules that have been created by third parties (other developers).
+    Some developers create reusable modules and share them through npm so
+    instead of recreating them we can search for a module that already exists
+    and then we can import that module into our application.
+  </p>
+  <p>
+    We are going to install some packages which we will need in the near future
+    when we are creating an event logger. On the npm documentation, click on the
+    “Documentation” that is on the navbar of the document.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node11.png'%}" alt="" />
+
+  <p>
+    What we are going to be working with is the cli. On the sidebar click on npm
+    CLI and this is basically what developers use when integrating npm into
+    their projects and their cli commands, configuring npm and using npm. Click
+    on cli commands.
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node12.png'%}" alt="" />
+  <p>
+    There are numerous cli commands. We will go through a few of them but ensure
+    you read the documentation to be familiar with these commands.
+  </p>
+  <p>
+    Create another folder inside the node folder and name it node03. Inside the
+    node03 folder, create a file and name it modules.js. Then add a console log
+    statement in the modules.js file.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        
+        console.log(" Testing")        
+     </code></pre>
+  </div>
+  <p>
+    In the terminal we can install a node package globally that we can just call
+    from the command line without adding it to a specific project.
+  </p>
+  <p>
+    Open the terminal and let’s install nodemon which is a great development
+    package. What nodemon basically does is that it monitors your files and as
+    you save, it automatically restarts your server.To install packages we start
+    with <strong>npm</strong> then <strong>followed</strong> by the name of the
+    module that you want to install and finally -g to install it globally. In
+    this case it will be
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        
+        $ npm install nodemon -g       
+     </code></pre>
+  </div>
+  <img class="img-fluid" src="{% static 'Images/node/node13.png'%}" alt="" />
+
+  <p>
+    Let us now use nodemon to run the modules.js file. Run the command below in
+    the terminal.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+
+        $  nodemon modules   
+     </code></pre>
+  </div>
+
+  <img class="img-fluid" src="{% static 'Images/node/node14.png'%}" alt="" />
+  <p>
+    You will notice that it has not exited the server the way it was doing
+    before when we were just using node. If you add another console log
+    statement, it will restart the server and run. To exit the terminal press
+    ctrl + c.
+  </p>
+  <p>
+    Now that we know how to install a package globally, let’s go ahead and add a
+    package to our project. Before adding a package, we first need to initialize
+    npm for our project. On the terminal, type
+    <strong>npm init</strong> to initialize npm. You will be asked some
+    questions when initializing npm. The first question is the package name and
+    here you will answer with the name of your folder. In this case, it is
+    <strong>node03</strong>.
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node15.png'%}" alt="" />
+  <p>
+    For now just press enter on all the questions and press ok to accept the
+    installation at the very end. After accepting, you will notice that a
+    package.json has been added to the files below the module.js file.
+  </p>
+
+  <p>
+    The <strong>package.json</strong> file is like a checklist with all the
+    details we provided when we set up npm. It's super important because npm
+    uses it to figure out which pieces of code (packages) your project needs.
+    The cool thing is, when we share our project on GitHub, we don't have to
+    send all those packages too. We only send the <strong>package.json</strong>,
+    so it's faster and easier for others to use our project. Whether they're
+    cloning it from GitHub or running it on a hosting platform, npm will see the
+    package.json and handle the packages, so we don't need to move them around
+    separately.
+  </p>
+  <p>Now let us go ahead and add a date functions package to our program.</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    
+            $ npm i date-fns 
+         </code></pre>
+  </div>
+  <p>
+    It will install this as a production dependency and include it in our
+    package.json file under dependencies.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node16.png'%}" alt="" />
+  <p>
+    We use <strong>npm install</strong> or <strong>npm i</strong> to perform the
+    installations.
+  </p>
+  <p>
+    We now have an extra file package-lock.json that has been added to our
+    files. We are not going to alter anything in this file as we will be working
+    with the package.json file. There is also a node_modules folder that has
+    been added in our file tree. Any dependency that we add sometimes also pulls
+    in other dependencies. When you open the node_modules folder, you will
+    notice that there are many other folders under it. These are many and we do
+    not want to add all these to github. What we do then is we create a
+    .gitignore file where we put these files and when the code is pushed to
+    github, github will ignore these files.
+  </p>
+  <p>
+    In the root directory, create a .gitignore file and the first file that we
+    will include here is the node_modules folder.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node17.png'%}" alt="" />
+  <p>
+    When you clone another repository from github, the first thing that you are
+    supposed to do is to run the <strong>npm install</strong> command so that it
+    can install all the packages under node_modules that are used in that
+    application.
+  </p>
+  <p>
+    Let us now head over to <strong>modules.js</strong> file and use the date
+    dependency that we just installed. Remove the console log statement that we
+    initially had.
+  </p>
+  <p>
+    At the top import format , add require of the date-fns package ;this is
+    using common js. Now that we have imported it, we can now use it in our
+    application. Add the code below
+  </p>
+  <p>
+    We are calling the format function from the date-fns and it accepts a new
+    date. After accepting a new date, we have to tell it how we want it to
+    format it. Here we are pointing out the year, then the month and the day
+    followed by the hour, minute and seconds. We are going to console log the
+    results.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    
+        const {format} = require('date-fns');
+
+        console.log(format(new Date(), 'yyyyMMdd\tHH:mm:ss'))
+         </code></pre>
+  </div>
+
+  <p>
+    Let us go ahead and add nodemon as a dev package to our project. Head over
+    to the terminal and use the command below to install nodemon as a dev
+    dependency.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    
+        $  npm i nodemon -D
+         </code></pre>
+  </div>
+  <p>
+    After the installation, you will be able to see nodemon as a dev dependency
+    in the package.json file.
+  </p>
+  <p>
+    Next we are going to talk about scripts and how to run our application using
+    scripts because that is what a server would use if we were to host this
+    somewhere. We mainly have the start script, the build script and dev script.
+  </p>
+  <p>
+    In the package.json file under scripts, let us add the start script. We then
+    specify node followed by the name of the file that we want to run. In this
+    case, the file is called modules. We then remove the test script and add the
+    dev script. We start with nodemon followed by the name of the file that we
+    want to run.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    
+        "scripts": {
+            "start": "node modules",
+            "dev": "nodemon modules"
+        },
+            
+         </code></pre>
+  </div>
+  <img class="img-fluid" src="{% static 'Images/node/node18.png'%}" alt="" />
+
+  <p>
+    To run the project , on the terminal we can use <strong>npm</strong> start
+    but since we want to run it in dev mode we will use npm run dev
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node19.png'%}" alt="" />
+  <p>
+    You can see nodemon started and we’ve got the date with the format that we
+    specified. We want to install other dependencies to our project therefore we
+    will close the server with ctrl+C.
+  </p>
+  <p>
+    Next we will install uuid dependency which allows us to generate ids that
+    are different for every entry.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    
+        $ npm install uuid
+         </code></pre>
+  </div>
+  <p>
+    After installing, head over to modules.js file so that we can import it and
+    then use it in our project.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+
+        const {v4:uuid} = require('uuid');
+
+        console.log(uuid())
+         </code></pre>
+  </div>
+  <p>
+    V4 stands for version 4. We specify the version of the uuid. This is another
+    way of doing the imports.
+  </p>
+  <p>This will generate a different ID to the console .</p>
+  <img class="img-fluid" src="{% static 'Images/node/node20.png'%}" alt="" />
+  <p>
+    You are probably wondering how you’ll know about all these packages. Head
+    over to the official site of npm at https://www.npmjs.com/ and for instance
+    about id, on the search box, type id and plenty of them will pop up. They
+    are mostly ranked by popularity. Once it pops up, you can open it and read
+    more about it. Here is a search for uuid. When you open it gives you more
+    information including how to install, the github repository, weekly
+    downloads etc.
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node21.png'%}" alt="" />
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

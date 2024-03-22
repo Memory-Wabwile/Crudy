@@ -1,0 +1,418 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h2>Laravel Development Server</h2>
+  <p>
+    Laravel includes a built-in development server that allows you to run your
+    application during development. You can start the development server by
+    running the following command within your project's directory:
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ php artisan serve
+     </code></pre>
+  </div>
+
+  <p>
+    This command will start the development server, and you will receive a URL
+    where you can access your Laravel application, The url is
+    http://localhost:8000 and this is how the default laravel page looks like.
+  </p>
+  <img
+    class="img-fluid"
+    src="{% static 'Images/laravel/laravel3.png'%}"
+    alt=""
+  />
+
+  <h1>Basic routing and controllers</h1>
+  <p>
+    In this section, we will explore the fundamentals of routing and controllers
+    in Laravel. Routing is a critical part of web development, as it defines how
+    incoming requests are handled and which controller methods should be
+    executed. This is done by defining routes in the
+    <strong> routes/web.php </strong>file. For example, the following route
+    would map the / URL to the <strong> HomeController@index </strong>
+    method:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        Route::get('/', 'HomeController@index');
+     </code></pre>
+  </div>
+  <p>
+    When a user visits the / URL, the <strong> index() </strong> method of the
+    <strong> HomeController</strong> will be executed.
+  </p>
+  <p>
+    Controllers are responsible for processing HTTP requests and returning
+    responses. They typically contain a number of methods, each of which handles
+    a specific type of request. For example, the HomeController might contain an
+    index() method for displaying the home page, a show() method for displaying
+    a specific post, and a create() method for creating a new post. When a route
+    is matched, the corresponding controller method is executed. The controller
+    method can then access any data that was passed in the request, such as the
+    request parameters or the request body. The controller method can then
+    generate a response, such as an HTML page, a JSON response, or a redirect.
+  </p>
+  <br />
+
+  <p><strong>What is Routing?</strong></p>
+  <p>
+    Routing in Laravel is all about defining the routes for your application. A
+    route is a URL pattern that the application should respond to, and it
+    specifies which controller method should handle the request. For example, a
+    route can define what happens when a user accesses the homepage, submits a
+    form, or clicks a link.
+  </p>
+  <p>Basic Routing</p>
+  <p>
+    Let us create a simple route to get started. Open your Laravel project in
+    Visual Studio Code. You can create routes in the
+    <strong>routes/web.php</strong> file. Here is an example of a basic route
+    that maps a URL to a closure:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        Route::get('/welcome', function () {
+            return 'Welcome to Laravel!';
+        });
+        
+     </code></pre>
+  </div>
+  <p>In the above example:</p>
+  <ul>
+    <li>Route::get defines an HTTP GET route.</li>
+    <li>/welcome is the URL pattern.</li>
+    <li>
+      The closure function returns the response, which is "Welcome to Laravel!"
+      in this case.
+    </li>
+  </ul>
+  <p>
+    When you navigate to
+    <strong><em>http://localhost:8000/welcome</em></strong> on your browser, you
+    should be able to see the outcome below.
+  </p>
+  <img
+    class="img-fluid"
+    src="{% static 'Images/laravel/laravel4.png'%}"
+    alt=""
+  />
+  <p>
+    You can define routes with dynamic parameters, allowing you to capture
+    values from the URL. For example, you can create a route to display a user's
+    profile based on their username:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        Route::get('/profile/{username}', function ($username) {
+            return "User Profile: $username";
+        });
+        
+     </code></pre>
+  </div>
+  <p>
+    In the above example: {username} is a parameter that captures the value from
+    the URL and passes it to the closure as an argument.
+  </p>
+  <p>Moving on, let us now look at controllers.</p>
+  <br />
+
+  <p><strong>What are Controllers?</strong></p>
+  <p>
+    Controllers are responsible for handling the application's HTTP requests and
+    responding with the appropriate data or views. They help to keep your routes
+    clean and organized by encapsulating the request-handling logic.
+  </p>
+  <p>
+    Creating a Controller <br />Let us create a basic controller for a
+    hypothetical "Blog" application. In your terminal, use Artisan to generate a
+    new controller:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $  php artisan make:controller BlogController  
+     </code></pre>
+  </div>
+  <p>
+    The command above creates a new controller in the
+    <strong> app/Http/Controllers </strong> directory.
+  </p>
+  <p>
+    In our newly created <strong> BlogController.php </strong> file, you can
+    define methods to handle different routes:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        class BlogController extends Controller
+        {
+            public function index() {
+                return "Blog Homepage";
+            }
+            public function show($post_id) {
+                return "Display Blog Post #$post_id";
+            }
+        }
+      
+     </code></pre>
+  </div>
+  <p>
+    Now, let us link our routes to the controller methods. In
+    <strong>>routes/web.php</strong>, you can use the Route::get method with a
+    controller and method name as the second argument:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        use App\Http\Controllers\BlogController;
+
+        Route::get('/blog', [BlogController::class, 'index']);
+        Route::get('/blog/{post_id}', [BlogController::class, 'show']);
+     </code></pre>
+  </div>
+  <p>
+    On the browser when you navigate to http://localhost:8000/blog you should be
+    bale to see the text that we put in the controller.
+  </p>
+  <p>
+    To recap, we have introduced the basics of routing and controllers in
+    Laravel. Routing allows you to define URL patterns and map them to
+    controller methods, providing a structured and organized way to handle
+    incoming requests.
+  </p>
+  <br /><br />
+
+  <h2>Blade templating and compiling assets</h2>
+  <h3>What is Blade?</h3>
+  <p>
+    Blade is the default templating engine in Laravel. It offers a simple yet
+    powerful way to create dynamic, reusable views. Blade templates are easy to
+    read and maintain, making them a favorite among Laravel developers. Blade
+    templates are compiled into plain PHP code, which makes them very fast and
+    efficient.
+  </p>
+  <p>Some of the key features of Blade include:</p>
+  <ul>
+    <li>
+      Templating inheritance: Blade allows you to create child templates that
+      inherit the layout and data of their parent templates. This makes it easy
+      to create reusable layouts and components.
+    </li>
+    <li>
+      Data binding: Blade provides a simple and expressive way to bind data to
+      your views. This makes it easy to display data from your models in your
+      views.
+    </li>
+    <li>
+      Control flow statements: Blade provides a number of control flow
+      statements, such as if statements, for loops, and foreach loops. This
+      makes it easy to control the flow of execution in your views.
+    </li>
+    <li>
+      Custom directives: Blade allows you to create your own custom directives.
+      This gives you the flexibility to extend the functionality of Blade to
+      meet your specific needs.
+    </li>
+  </ul>
+
+  <p>
+    You can create Blade views in the
+    <strong>resources/views</strong> directory. These views can be used to
+    structure the HTML of your web pages. Here is how you can create a simple
+    Blade view:
+  </p>
+  <ol>
+    <li>
+      Create a new file, in the resources/views directory. Right now we already
+      have the welcome.blade.php which has the default content of laravel that
+      was displayed on the page when we first run the server.
+    </li>
+    <li>
+      Add Blade markup to the view. Remove the initial content that is on the
+      page.
+    </li>
+    <p><strong>resources/views/welcome.blade.php</strong></p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            &lt;!DOCTYPE html>
+            &lt;html>
+            &lt;head>
+                &lt;title>Welcome&lt;/title>
+            &lt;/head>
+            &lt;body>
+                &lt;h1>Welcome to Our Website&lt;/h1>
+            &lt;/body>
+            &lt;/html>
+         </code></pre>
+    </div>
+  </ol>
+
+  <p>
+    Blade templates use directives to execute PHP code within the HTML. For
+    example, you can use @if and @endif to conditionally display content:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    @if($condition)
+        &lt;p>This content is shown if the condition is true.&lt;/p>
+    @else
+        &lt;p>This content is shown if the condition is false.&lt;/p>
+    @endif
+       </code></pre>
+  </div>
+
+  <p>
+    You can insert variables into Blade views using double curly braces {{
+    }}:<br />
+    The double curly braces ({{ }}) in Blade are used to insert variables into
+    Blade views. When a Blade template is rendered, the contents of the double
+    curly braces are replaced with the value of the variable.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;h2>Welcome, {{ $user_name }}!&lt;/h2>
+       </code></pre>
+  </div>
+  <p>
+    In the example above, the $user_name variable is being inserted into the
+    &lt;h2> tag. When the template is rendered, the value of the $user_name
+    variable will be substituted in place of the {{ $user_name }} placeholder.
+  </p>
+  <p>
+    Compiling assets involves processing and optimizing CSS and JavaScript
+    files. It's essential for improving performance, as it combines and minifies
+    these files, reducing load times. Laravel uses Laravel Mix to handle asset
+    compilation
+  </p>
+  <p>
+    You can define your CSS styles in .css files and then compile them using
+    Laravel Mix. Create a resources/css directory for your stylesheets and
+    compile them into a single, minified file. Here's how you can do it:
+  </p>
+  <ol>
+    <li>
+      Create a CSS file in case you don’t have one in the
+      <strong>resources/css </strong>
+      directory. e.g., app.css. In this case, we already have the file created
+      for us.
+    </li>
+    <li>
+      Edit your <strong> webpack.mix.js </strong> file to specify the
+      compilation process. The file is found on the root directory
+    </li>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">
+            mix.css('resources/css/styles.css', 'public/css');
+           </code></pre>
+    </div>
+  </ol>
+  <p>
+    To use this code, you would first need to install the Laravel Mix package.
+    You can do this by running the following command:
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ composer require laravel-mix
+       </code></pre>
+  </div>
+  <p>
+    Once the package is installed, you will need to create a webpack.mix.js file
+    in the root directory of your Laravel project. If this file does not already
+    exist, you can create it by running the following command:
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ npx mix init
+       </code></pre>
+  </div>
+  <p>This will create a new webpack.mix.js file with a basic configuration.</p>
+  <p>
+    The mix.css() method is being used to compile the resources/css/styles.css
+    file into the public/css directory. This means that when the Laravel
+    application is run, the compiled CSS file will be located at
+    public/css/styles.css. The mix.css() method is used to compile CSS files.
+    The first argument to the mix.css() method is the path to the source CSS
+    file, and the second argument is the path to the compiled CSS file.
+  </p>
+  <p>
+    The mix.css() method can also be used to minify CSS files. Minification is
+    the process of removing unnecessary characters from a CSS file without
+    affecting its functionality. This can make CSS files smaller, which can
+    improve the performance of your application. To minify a CSS file, you can
+    use the mix.minify() method. For example, the following code would minify
+    the public/css/all.css file:
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        mix.minify('public/css/all.css');
+       </code></pre>
+  </div>
+  <p>Now run the compilation command:</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $ npm run dev
+       </code></pre>
+  </div>
+  <p>
+    When the npm run dev command is executed, the following tasks will be
+    performed:
+  </p>
+  <ol>
+    <li>
+      The Node.js package manager (npm) will be used to install any dependencies
+      that are listed in the package.json file.
+    </li>
+    <li>
+      The Laravel Mix compiler will be used to compile the application's assets.
+    </li>
+    <li>
+      A development server will be started. This server will watch for changes
+      to the application's assets, and will automatically recompile the assets
+      whenever a change is detected.
+    </li>
+  </ol>
+  <p>
+    The development server will typically be accessible on port 8080. This means
+    that you can access the development server by visiting the following URL in
+    your web browser:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        http://localhost:8080
+       </code></pre>
+  </div>
+  <p>
+    To recap, we have explored Blade templating, a powerful feature in Laravel
+    for creating dynamic and reusable views. We have also learned about asset
+    compilation using Laravel Mix, which is crucial for optimizing CSS and
+    JavaScript files, improving the performance of your web application.
+  </p>
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,375 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <h1>NODE JS</h1>
+  <h5>OBJECTIVES</h5>
+  <ul>
+    <li>To know what Node.js is.</li>
+    <li>Advantages of learning Node.js</li>
+    <li>To know the difference between node.js and vanilla js</li>
+  </ul>
+  <p>
+    Node.js is an open source cross-platform runtime environment written in
+    JavaScript. The V8 JavaScript engine in Chrome serves as its foundation,
+    parsing and executing JavaScript code. Because Node employs an event-driven,
+    non-blocking I/O model, it is lightweight and quick. One of the primary
+    causes of Node's rise in popularity is this programming paradigm.
+  </p>
+
+  <p>
+    It is called Node because it is used to build simple single-process blocks
+    called nodes. These nodes can be organized with good networking protocols
+    for communication with each other and be scaled up to build large
+    distributed programs.
+  </p>
+
+  <p>
+    Think of a node like a small building block of code that can perform a
+    specific task. These modules can communicate with each other using good
+    networking methods, and we can combine them to create more complex and
+    larger programs. It's like building with LEGO blocks where each block (node)
+    has its purpose, and you connect them to build something bigger.
+  </p>
+  <br />
+
+  <h4>Advantages of learning Node.js</h4>
+  <ol>
+    <li><strong>Easy to Learn</strong></li>
+    <p>
+      JavaScript is used in Node's writing. One of the most widely used
+      programming languages is JavaScript, which almost all developers are
+      familiar with. Therefore, even for a novice JavaScript coder, learning
+      Node takes less time and effort.
+    </p>
+
+    <li><strong>Full Stack js</strong></li>
+    <p>
+      Node is associated with the rise of full stack web development. When a
+      single developer handles all program functions, such as database
+      management, front-end and back-end development, they are referred to as
+      full stack web developers. Full stack developers had to master several
+      languages prior to Node. All you need to know to create front-end and
+      back-end web apps with Node is JavaScript.
+    </p>
+
+    <li><strong>Demand in the Market</strong></li>
+    <p>
+      There is a growing need for full stack engineers, and positions needing
+      Node expertise are becoming more and more common. Therefore, an excellent
+      strategy to increase your career possibilities as a stack developer is to
+      include Node.js on your CV. Also, the remuneration is excellent.
+    </p>
+
+    <li><strong>Flexibility in App Development</strong></li>
+    <p>
+      Node gives developers significantly more freedom when creating projects.
+      You get the bare minimum with a fresh Node installation, so you can create
+      everything from the start with little limitations.
+    </p>
+
+    <li><strong>Active Community</strong></li>
+    <p>
+      An lively and energetic community of developers constantly contributes to
+      the growth of Node.js, an open source framework. Because you have access
+      to a multitude of solutions at every developmental level, that facilitates
+      learning.
+    </p>
+  </ol>
+  <br />
+
+  <p>Let us now learn how node.js works.</p>
+  <p>
+    In Node.js, the big idea is "non-blocking." This means that when you ask
+    Node to do something -(like read a file), it doesn't wait around. Instead:
+  </p>
+  <ul>
+    <li>You tell Node what to do by giving it a task (a function).</li>
+    <li>You provide the task with any needed information (arguments).</li>
+    <li>You also give Node a callback function.</li>
+    <li>Node moves on to do other things.</li>
+    <li>
+      When the task is done, Node calls your callback function with the result.
+    </li>
+  </ul>
+
+  <p>
+    It's like telling someone, "Please go get me a burger, and here's some
+    money. When you have the burger, call me so I can eat it." You don't just
+    stand there waiting for the burger; you can do other stuff while you wait
+    for the call that says, "Burger's ready!" This is what makes Node fast and
+    efficient.
+  </p>
+
+  <p>First things first we need to install node.js</p>
+
+  <p>
+    On the browser search for node.js or use
+    <a href=" https://nodejs.org/en " target="_blank"> this </a>then install the
+    version that is recommended for most users. There’s normally two versions,
+    the recommended version and the current version. At the time of making this
+    content , the recommended version is version 18.18.1 hence this is the
+    version that we are going to install. Click on it to download.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node1.png'%}" alt="" />
+
+  <p>
+    With node.js now installed, let us create a project called node01. First
+    create a folder called node and inside this folder is where we will create
+    all our node.js projects. The first project we will name it node01 and
+    inside this project, create a file called server.js. Open this project with
+    visual studio code.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node2.png'%}" alt="" />
+
+  <h4>Difference between node.js and vanilla js</h4>
+
+  <ol>
+    <li>
+      The main difference between node.js and vanilla.js is that node runs in
+      the server and not in the browser like vanilla js. This means that we are
+      working on the backend and not just the frontend part of the application.
+    </li>
+
+    <li>
+      The console is the terminal window in your code editor and not on the
+      browser like the one we were using for vanilla.js. On the terminal you
+      just type node and it opens up the console for node as shown below.
+    </li>
+    <img class="img-fluid" src="{% static 'Images/node/node3.png'%}" alt="" />
+    <p>
+      You may also be able to run javascript in the node console. Add the
+      following code in your server.js file then we will run the code on the
+      terminal starting with node followed by the name of the file. In this case
+      it is the server.
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">console.log(" Hello World")</code></pre>
+    </div>
+
+    <img class="img-fluid" src="{% static 'Images/node/node4.png'%}" alt="" />
+    <li>
+      Another difference between the two is that there is a global object in
+      node instead of a window object.In web development, when you work with
+      JavaScript in a web browser, you often use something called the "window
+      object." It's like a big container that holds information about the web
+      page and lets you do things with it.
+    </li>
+    <p>
+      Now, when you use JavaScript in Node.js (which is for server-side
+      programming), there's no "window object." Instead, there's a thing called
+      the "global object." It's similar to the "window object," but it's
+      designed for server-side code. Think of it as a container that holds
+      information and tools for your server-side program, like handling files,
+      sending data, and other server-related stuff.In the server.js file console
+      log the global object then run the file on the terminal to be able to see
+      the results.
+    </p>
+    <div class="code-wrapper">
+      <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+      <pre><code class="language-js">console.log(global)</code></pre>
+    </div>
+
+    <li>
+      Node.js uses commonJs modules instead of ES6 modules that we were using in
+      javascript - In JavaScript for web browsers, we often use a module system
+      called "ES6 modules." It's like having special boxes for each part of our
+      code.
+    </li>
+    <p>
+      Now, when we write code in Node.js (for server-side tasks), we use a
+      different system called "CommonJS modules." These modules work a bit
+      differently from ES6 modules. Instead of using special boxes, we use a
+      different way to organize and share our code. So, it's like choosing a
+      different type of toolbox for the job. When we code for the web browser,
+      we might use one kind of toolbox (ES6 modules), and when we code with
+      Node.js, we use another kind of toolbox (CommonJS modules). They help us
+      keep our code organized and easy to use, depending on where we're working.
+    </p>
+  </ol>
+  <br />
+
+  <p>Let us look at an example of this.</p>
+
+  <h4>server.js</h4>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+    const os = require('os');
+
+    console.log(os.type())
+    console.log(os.version())
+    console.log(os.homedir()) </code></pre>
+  </div>
+  <p>Let us understand what each line of code does here</p>
+
+  <ul>
+    <li>
+      const os = require('os'); - This line of code is telling Node.js to use a
+      built-in module called os. Think of it as asking Node.js to provide
+      information about the computer that you are using.
+    </li>
+    <li>
+      console.log(os.type()): Here, we're using the os module to find out the
+      type of operating system running on your computer.
+    </li>
+    <li>
+      console.log(os.version()): This line is similar, but it's asking for the
+      version of your operating system. You'll get a version number of your
+      computer.
+    </li>
+    <li>
+      console.log(os.homedir()): Finally, this line is checking for the home
+      directory of the current user on the computer. It's like asking the users
+      main folder on the computer.
+    </li>
+  </ul>
+  <p>Run the node console to be able to see the results on the terminal.</p>
+  <img class="img-fluid" src="{% static 'Images/node/node5.png'%}" alt="" />
+
+  <h4>Assignment:</h4>
+  <p>Research on the other common.js modules and write examples of them.</p>
+  <br /><br />
+  <h1>Read and write files</h1>
+  <p>
+    Next we are going to look at how to read and write files in node.js with the
+    file system which allows us to create, read , update and delete files.
+  </p>
+  <p>
+    Head over to the official documentation of node.js
+    <a href="https://nodejs.org/en" target="_blank"> here </a>
+    then click on “Docs” which is on the navbar.
+  </p>
+  <p>
+    On the left side of the page you will see the version of the node that you
+    installed. Go ahead and click on that version.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node6.png'%}" alt="" />
+  <p>In this case, it was version 18.18.1.</p>
+  <p>
+    Today we are looking at the file system, so go ahead and click on the file
+    system.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node7.png'%}" alt="" />
+  <p>
+    There are many things that you can do with the file system but we will start
+    with the option for reading files.
+  </p>
+  <p>
+    While on that page, press ( CTRL + F) and a search tab will open. Since
+    there are so many files here, we will use the search to find the specific
+    file that we want. In this case, type readfile and scroll till you find the
+    option for <strong>fs.readFile(path[,options], callback)</strong>
+  </p>
+
+  <img class="img-fluid" src="{% static 'Images/node/node8.png'%}" alt="" />
+  <p>Click on it and read more about it.</p>
+  <p>
+    Create a folder under the node folder that we initially created and name it
+    node02. Inside the node02 folder create another folder and name it files,
+    create a file and name it index.js then open the node02 folder with visual
+    studio code.
+  </p>
+  <p>
+    <img class="img-fluid" src="{% static 'Images/node/node9.png'%}" alt="" />
+  </p>
+  <p>
+    Inside the files folder , create two files; lorem.txt and starter.txt.
+    <br />
+    Inside the starter.txt file, write a text introducing yourself.<br />
+    We are going to start by importing the fs common core module in the index.js
+    file and we use common js imports for that.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      const fs = require('fs');
+     </code></pre>
+  </div>
+  <p>
+    After that, let’s go ahead and read the starter.js file and we specify the
+    path where the file is located followed by a callback function that will be
+    called in case there is an error with reading the file. Console log data to
+    see the results on the terminal.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      fs.readFile('./files/starter.txt', (err, data)=>{
+        if(err) throw err;
+        console.log(data)
+      })
+         </code></pre>
+  </div>
+  <p>
+    Open the terminal and run the index file. You’ll then notice that the data
+    is presented as buffer data. In order to be able to read the data we add a
+    toString method after data in the console log statement then run the index
+    file again to see the results.
+  </p>
+  <img class="img-fluid" src="{% static 'Images/node/node10.png'%}" alt="" />
+
+  <p>
+    Now we add an uncaughtException incase there is an error on the page.
+    Process is one of those inbuilt values that node has therefore there is no
+    need to import it.
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      // exit on uncaught errors
+      process.on("uncaughtException", err =>{
+      console.error(`There was an uncaught error: ${err}`);
+      process.exit(1);// exits the application
+      })
+      
+         </code></pre>
+  </div>
+
+  <p>This is from the node documentation.</p>
+
+  <p>
+    Now that we know how to read files, next we are going to look at writing
+    files.
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+      fs.writeFile('./files/reply.txt', " hello there Programmer." ,(err)=>{ // writing a new file called reply.txt
+        if(err) throw err;
+        console.log("Write complete");
+        })
+        
+         </code></pre>
+  </div>
+  <p>
+    We are now creating a new file called reply.txt and adding the text “ hello
+    there programmer” in this new file.We now don’t need to convert the data to
+    string because it will write in string by default. Run the file in the
+    console to see the results.
+  </p>
+
+  <p><strong>Assignment:</strong></p>
+  <ol>
+    <li>
+      Use append instead of write to create another file and add data onto it.
+    </li>
+    <li>Use append to add extra data in the reply.txt file</li>
+    <li>Rename the reply.txt file to newreply.txt</li>
+  </ol>
+
+
+
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}

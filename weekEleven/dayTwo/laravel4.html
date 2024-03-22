@@ -1,0 +1,317 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="col-md-12">
+  <p>Next we move on to Eager loading and explore some more.</p>
+  <h3>Eager Loading</h3>
+  <p>
+    Eager loading is a technique in Eloquent that allows you to reduce the
+    number of database queries when working with related models. For instance,
+    if you have a User model that has many Post models, you can eager load the
+    posts while fetching users to avoid the N+1 query problem:
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        $users = User::with('posts')->get();
+     </code></pre>
+  </div>
+  <p>
+    In the example above, we are using the <strong> with() </strong> method to
+    eager load the <strong> posts</strong> relationship. This means that Laravel
+    will retrieve all of the posts for each user in the collection in a single
+    query. The code <strong>$users = User::with('posts')->get(); </strong> is an
+    example of using Laravel's Eager Loading feature to retrieve a collection of
+    users and their associated posts.
+  </p>
+  <p>
+    Once we have retrieved the users and their posts, we can iterate over the
+    collection and access the posts for each user using the posts attribute. For
+    example, the following code shows how to display the titles of all of the
+    posts for each user:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        foreach ($users as $user) {
+            echo '&lt;h2>' . $user->name . '&lt;/h2>';
+            echo '&lt;ul>';
+            foreach ($user->posts as $post) {
+                echo '&lt;li>' . $post->title . '&lt;/li>';
+            }
+            echo '&lt;/ul>';
+        }
+        
+     </code></pre>
+  </div>
+  <p>
+    To recap, Eloquent is a powerful feature in Laravel that simplifies the
+    process of fetching data from your database. With Eloquent, you can work
+    with database records as if they were objects, making database operations in
+    Laravel more intuitive and enjoyable.<br />
+    Eloquent provides a number of benefits, including:
+  </p>
+  <ol>
+    <li>
+      Simplicity: Eloquent makes it easy to perform common database operations,
+      such as creating, reading, updating, and deleting records.
+    </li>
+    <li>
+      Flexibility: Eloquent is flexible enough to be used for a wide variety of
+      database applications.
+    </li>
+    <li>
+      Power: Eloquent provides a number of powerful features, such as eager
+      loading and lazy loading, which can improve the performance of your
+      application.
+    </li>
+  </ol>
+  <br /><br />
+
+  <h1>Forms and saving data</h1>
+  <p>
+    In this part, we'll explore working with forms in Laravel and saving data to
+    your application's database. Forms are essential for collecting and
+    processing user input in web applications. So how do we create forms:
+  </p>
+  <p>
+    Building Forms<br />
+    Laravel provides several ways to create forms in your views. One common
+    approach is to use the Form facade, which simplifies the process of
+    generating HTML forms. Here's how to create a basic form for user
+    registration:
+  </p>
+
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        &lt;form method="POST" action="/register">
+            @csrf
+            &lt;label for="name">Name:&lt;/label>
+            &lt;input type="text" name="name" id="name">
+            &lt;label for="email">Email:&lt;/label>
+            &lt;input type="email" name="email" id="email">
+            &lt;label for="password">Password:&lt;/label>
+            &lt;input type="password" name="password" id="password">
+            &lt;button type="submit">Register&lt;/button>
+        &lt;/form>
+        
+     </code></pre>
+  </div>
+  <p>
+    The form has three fields: name, email, and password. The form also has a
+    submit button. When the user clicks the submit button, the form data will be
+    submitted to the /register route using the <strong>POST</strong> method.
+    Laravel will then handle the form submission and save the user data to the
+    database.
+  </p>
+  <p>
+    The method attribute specifies the HTTP method that will be used to submit
+    the form data. In this case, the POST method is used. The action attribute
+    specifies the URL that the form data will be submitted to. In this case, the
+    form data will be submitted to the /register route.
+  </p>
+  <p>Let us see what each line does:</p>
+  <ul>
+    <li>The form uses the POST method to send the data to the server.</li>
+    <li>
+      The <strong>@csrf</strong> directive generates a hidden input field with a
+      CSRF token for security. This token helps to protect your application from
+      CSRF attacks.
+    </li>
+    <li>Input fields are provided for the user's name, email, and password.</li>
+    <li>The form has a submit button for registration.</li>
+  </ul>
+  <p>
+    Once you have submitted your data, you want to know what happens next,
+    ergo:<br />
+    Processing Form Data To handle form submissions in Laravel, you can create a
+    controller method that processes the form data. For example, let's assume
+    you have a RegisterController with a create method to handle user
+    registration.
+  </p>
+  <p>
+    The first step in the <strong> create()</strong> method is to validate the
+    user's data. This can be done using the <strong>validate()</strong> method.
+    For example, the following code shows how to validate the name, email, and
+    password fields:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        public function create(Request $request)
+        {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:8',
+            ]);        
+        
+            // ...
+        }             
+     </code></pre>
+  </div>
+  <p>
+    The above code is a public method called <strong> create()</strong> that
+    takes a Request object as input. This method can be used to create a new
+    user record in the database.<br />
+    Inside the create method, you can validate the incoming form data and then
+    store it in your database.
+  </p>
+  <p>
+    If the user's data does not pass validation, the
+    <strong>validate()</strong> method will throw a
+    <strong>ValidationException</strong> exception. You can catch this exception
+    and display the validation errors to the user.
+  </p>
+  <p>
+    Once the user's data has been validated, you can store it in the database.
+    This can be done using the Eloquent ORM. Laravel provides a convenient way
+    to validate form data using validation rules. You can define these rules in
+    the controller method:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        public function create(Request $request)
+        {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:8',
+            ]);        
+        
+            $user = new User();
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->password = $request->input('password');
+            $user->save();        
+        
+            // ...
+        }                    
+     </code></pre>
+  </div>
+  <p>
+    In this example, the validation rules ensure that the name, email, and
+    password fields are not empty, and the email is in the correct format. After
+    the user's data has been stored in the database, you can redirect the user
+    to a success page or show error messages, depending on the outcome of the
+    operation.
+  </p>
+  <p>
+    Let us see how to store data first then we shall see how the redirection
+    works later on in the tutorial.
+  </p>
+  <br />
+
+  <p>
+    Storing Data<br />
+    Once you've validated the form data, you can store it in your database.
+    Laravel's Eloquent models make this process simple. Here's how you can
+    create a new user record in the users table:
+  </p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        User::create([
+        'name' => $request->input('name'),
+        'email' => $request->input('email'),
+        'password' => Hash::make($request->input('password')),
+    ]);                     
+     </code></pre>
+  </div>
+  <p>
+    In this example, we use Eloquent to create a new user record with the
+    provided data.
+  </p>
+
+  <p>Redirecting a user to success page, we can use the code provided below:</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        public function create(Request $request)
+        {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:8',
+            ]);        
+        
+            $user = new User();
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->password = $request->input('password');
+            $user->save();        
+        
+            return redirect('/');
+        }                            
+     </code></pre>
+  </div>
+  <p>
+    The <strong>create()</strong> function above is a Laravel controller method
+    that can be used to create a new user record in the database. It takes a
+    Request object as input, which contains the user's data. The method first
+    validates the user's data using the <strong>validate()</strong> method. If
+    the validation is successful, the method creates a new User object and sets
+    its name, email, and password properties to the corresponding values from
+    the Request object. The method then saves the User object to the database.
+    Finally, the method redirects the user to the home page.
+  </p>
+
+  <p>To show error to the user:</p>
+  <div class="code-wrapper">
+    <div id="copy-button"><i class="bi bi-stickies-fill"></i></div>
+    <pre><code class="language-js">
+        public function create(Request $request)
+        {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:8',
+            ]);        
+        
+            $user = new User();
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->password = $request->input('password');        
+        
+            try {
+                $user->save();
+            } catch (\Exception $e) {
+                // Display the error messages to the user.
+                $errors = $e->getMessage();
+            }
+        }                                  
+     </code></pre>
+  </div>
+  <p>
+    The above code shows how to use a try-catch block to handle errors when
+    creating a new user in Laravel. The try block contains the code that is
+    executed to create the new user. If the code in the try block executes
+    successfully, the try block will exit and the code following the try-catch
+    block will be executed.
+  </p>
+  <p>
+    If the code in the try block throws an exception, the catch block will be
+    executed. The catch block can be used to handle the exception and display
+    error messages to the user, or to log the error for later debugging.
+  </p>
+  <p>
+    To recap, we have explored how to create forms in Laravel, handle form
+    submissions, validate user input, and save data to the database. Forms are a
+    critical part of web applications, and Laravel's tools and features simplify
+    the process of working with them.
+  </p>
+
+
+
+  <div class="butons">
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'coursesDashboard' %}">&laquo; Previous </a>
+    </button>
+    <button class="btn btn-outline-primary">
+      <a href="{% url 'jsPart12' %}"> Next &raquo;</a>
+    </button>
+  </div>
+</div>
+{% endblock %}
